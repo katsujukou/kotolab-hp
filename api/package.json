@@ -1,0 +1,7 @@
+{ 
+  "type": "module",
+  "scripts": {
+    "compile": "cd .. && spago build -p api",
+    "dev": "cd .. && spago run -p api -m Kotolab.HP.API"
+  }
+}

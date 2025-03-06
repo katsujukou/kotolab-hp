@@ -1,0 +1,7 @@
+package: 
+  name: web
+  dependencies:
+    - halogen
+    - halogen-hooks
+    - halogen-helix
+    

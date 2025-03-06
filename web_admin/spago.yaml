@@ -1,0 +1,6 @@
+package:
+  name: admin-web
+  dependencies:
+    - halogen
+    - halogen-hooks
+    - halogen-helix

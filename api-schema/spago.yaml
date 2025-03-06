@@ -1,0 +1,4 @@
+package: 
+  name: api-schema
+  dependencies:  
+    - routing-duplex

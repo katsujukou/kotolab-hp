@@ -1,0 +1,7 @@
+package:
+  name: api
+  dependencies:
+    - api-schema
+    - fmt
+    - httpurple
+    - routing-duplex

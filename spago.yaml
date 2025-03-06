@@ -1,0 +1,13 @@
+package:
+  name: kotolab-hp
+  dependencies:
+    - console
+    - effect
+    - prelude
+  test:
+    main: Test.Main
+    dependencies: []
+workspace:
+  packageSet:
+    registry: 63.3.0
+  extraPackages: {}

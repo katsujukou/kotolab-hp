@@ -1,0 +1,12 @@
+{
+  "type": "module",
+  "scripts": {
+    "compile": "cd .. && spago build -p admin-web",
+    "dev": "pnpm run compile && cp src/index.dev.js ./index.js && vite"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.11",
+    "tailwindcss": "^4.0.11",
+    "vite": "^6.2.0"
+  }
+}
