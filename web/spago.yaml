@@ -1,9 +1,16 @@
 package: 
   name: web
   dependencies:
+    - api-schema
+    - console
+    - effect
+    - fmt
     - halogen
     - halogen-hooks
     - halogen-helix
+    - prelude
   test:
     main: Test.Kotolab.HP.Web
-    dependencies: []
+    dependencies: 
+      - spec
+      - spec-node

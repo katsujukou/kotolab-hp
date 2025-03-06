@@ -5,13 +5,20 @@
         "path": "admin-web",
         "core": {
           "dependencies": [
+            "api-schema",
+            "console",
+            "effect",
+            "fmt",
             "halogen",
             "halogen-helix",
-            "halogen-hooks"
+            "halogen-hooks",
+            "prelude"
           ],
           "build_plan": [
             "aff",
+            "api-schema",
             "arrays",
+            "assert",
             "avar",
             "bifunctors",
             "catenable-lists",
@@ -27,6 +34,7 @@
             "enums",
             "exceptions",
             "exists",
+            "fmt",
             "foldable-traversable",
             "foreign",
             "foreign-object",
@@ -46,7 +54,9 @@
             "invariant",
             "js-date",
             "js-promise",
+            "js-uri",
             "lazy",
+            "lcg",
             "lists",
             "maybe",
             "media-types",
@@ -61,7 +71,11 @@
             "partial",
             "prelude",
             "profunctor",
+            "quickcheck",
+            "random",
+            "record",
             "refs",
+            "routing-duplex",
             "safe-coerce",
             "st",
             "strings",
@@ -93,9 +107,12 @@
         "path": "api",
         "core": {
           "dependencies": [
+            "aff",
             "api-schema",
+            "effect",
             "fmt",
             "httpurple",
+            "prelude",
             "routing-duplex"
           ],
           "build_plan": [
@@ -266,6 +283,7 @@
         "path": "api-schema",
         "core": {
           "dependencies": [
+            "prelude",
             "routing-duplex"
           ],
           "build_plan": [
@@ -322,36 +340,24 @@
           "build_plan": []
         }
       },
-      "kotolab-hp": {
-        "path": "./",
-        "core": {
-          "dependencies": [
-            "console",
-            "effect",
-            "prelude"
-          ],
-          "build_plan": [
-            "console",
-            "effect",
-            "prelude"
-          ]
-        },
-        "test": {
-          "dependencies": [],
-          "build_plan": []
-        }
-      },
       "web": {
         "path": "web",
         "core": {
           "dependencies": [
+            "api-schema",
+            "console",
+            "effect",
+            "fmt",
             "halogen",
             "halogen-helix",
-            "halogen-hooks"
+            "halogen-hooks",
+            "prelude"
           ],
           "build_plan": [
             "aff",
+            "api-schema",
             "arrays",
+            "assert",
             "avar",
             "bifunctors",
             "catenable-lists",
@@ -367,6 +373,7 @@
             "enums",
             "exceptions",
             "exists",
+            "fmt",
             "foldable-traversable",
             "foreign",
             "foreign-object",
@@ -386,7 +393,9 @@
             "invariant",
             "js-date",
             "js-promise",
+            "js-uri",
             "lazy",
+            "lcg",
             "lists",
             "maybe",
             "media-types",
@@ -401,7 +410,11 @@
             "partial",
             "prelude",
             "profunctor",
+            "quickcheck",
+            "random",
+            "record",
             "refs",
+            "routing-duplex",
             "safe-coerce",
             "st",
             "strings",
@@ -425,8 +438,84 @@
           ]
         },
         "test": {
-          "dependencies": [],
-          "build_plan": []
+          "dependencies": [
+            "spec",
+            "spec-node"
+          ],
+          "build_plan": [
+            "aff",
+            "ansi",
+            "argonaut-codecs",
+            "argonaut-core",
+            "arraybuffer-types",
+            "arrays",
+            "avar",
+            "bifunctors",
+            "catenable-lists",
+            "console",
+            "const",
+            "contravariant",
+            "control",
+            "datetime",
+            "distributive",
+            "effect",
+            "either",
+            "enums",
+            "exceptions",
+            "exists",
+            "exitcodes",
+            "foldable-traversable",
+            "foreign",
+            "foreign-object",
+            "fork",
+            "free",
+            "functions",
+            "functors",
+            "gen",
+            "identity",
+            "integers",
+            "invariant",
+            "js-date",
+            "lazy",
+            "lists",
+            "maybe",
+            "mmorph",
+            "newtype",
+            "node-buffer",
+            "node-event-emitter",
+            "node-fs",
+            "node-path",
+            "node-process",
+            "node-streams",
+            "nonempty",
+            "now",
+            "nullable",
+            "numbers",
+            "open-memoize",
+            "optparse",
+            "ordered-collections",
+            "orders",
+            "parallel",
+            "partial",
+            "pipes",
+            "posix-types",
+            "prelude",
+            "profunctor",
+            "record",
+            "refs",
+            "safe-coerce",
+            "spec",
+            "spec-node",
+            "st",
+            "strings",
+            "tailrec",
+            "transformers",
+            "tuples",
+            "type-equality",
+            "typelevel-prelude",
+            "unfoldable",
+            "unsafe-coerce"
+          ]
         }
       }
     },
