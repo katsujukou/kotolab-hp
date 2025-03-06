@@ -24,8 +24,11 @@ jobs:
 
       # Run CI jobs
       - name: Install
-        run: spago install -p ${{ matrix.target }}} && pnpm -F './${{ matrix.target }}' install
+        run: spago install -p ${{ matrix.target }} && pnpm -F './${{ matrix.target }}' install
 
+      - name: Compile
+        run: pnpm -F './${{ matrix.target}}' run compile
+        
       - name: Test
         if: matrix.target != 'api-schema'
         run: pnpm -F './${{ matrix.target }}' run test
