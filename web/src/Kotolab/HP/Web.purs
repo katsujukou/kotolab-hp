@@ -10,5 +10,4 @@ import Kotolab.HP.Web.App as App
 main :: Effect Unit
 main = runHalogenAff do
   body <- awaitBody
-  runUI App.make {} body 
-  
+  runUI App.make {} body

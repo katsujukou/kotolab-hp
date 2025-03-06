@@ -2,7 +2,9 @@
   "type": "module",
   "scripts": {
     "compile": "cd .. && spago build -p web",
-    "dev": "pnpm run compile && cp src/index.dev.js ./index.js && vite"
+    "dev": "pnpm run compile && cp src/index.dev.js ./index.js && vite",
+    "test": "cd .. && spago test -p web",
+    "check": "purs-tidy check ./src ./test"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.11",

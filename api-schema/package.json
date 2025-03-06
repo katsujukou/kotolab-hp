@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "scripts": {
+    "compile": "cd .. && spago build -p api-schema",
+    "check": "purs-tidy check ./src ./check"
+  }
+}

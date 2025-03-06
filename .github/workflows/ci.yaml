@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    paths: "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [api-schema, api, web, admin-web]
+    steps:
+      # Setup Nix envirionment
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v23
+        with:
+          nix_path: nixpkgs=channel:nixos-24.05
+      - uses: cachix/cachix-action@v14
+        with:
+          name: katsujukou-github
+      - uses: nicknovitski/nix-develop@v1
+      - run: nix develop --extra-experimental-features "nix-command flakes"
+
+      # Run CI jobs
+      - name: Install
+        run: spago install -p ${{ matrix.target }}} && pnpm -F './${{ matrix.target }}' install
+
+      - name: Test
+        if: matrix.target != 'api-schema'
+        run: pnpm -F './${{ matrix.target }}' run test
+
+      - name: Check
+        run: pnpm -F './${{ matrix.target }}' run check
+        

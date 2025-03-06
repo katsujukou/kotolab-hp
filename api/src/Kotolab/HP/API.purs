@@ -12,7 +12,7 @@ main :: HTTPurple.ServerM
 main = do
   HTTPurple.serve { hostname: "0.0.0.0", port: 3000 } { route: Schema.route, router }
   where
-    router { method, route } = case method, route of 
-      Get, Schema.Hello { name } -> do
-        HTTPurple.ok $ Fmt.fmt @"Hello, {name}!" { name: fromMaybe "World" name }
-      _, _ -> notFound
+  router { method, route } = case method, route of
+    Get, Schema.Hello { name } -> do
+      HTTPurple.ok $ Fmt.fmt @"Hello, {name}!" { name: fromMaybe "World" name }
+    _, _ -> notFound

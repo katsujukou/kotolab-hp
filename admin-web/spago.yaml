@@ -4,3 +4,6 @@ package:
     - halogen
     - halogen-hooks
     - halogen-helix
+  test:
+    main: Test.Kotolab.HP.Admin
+    dependencies: []

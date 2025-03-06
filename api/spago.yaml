@@ -5,3 +5,8 @@ package:
     - fmt
     - httpurple
     - routing-duplex
+  test:
+    main: Test.Kotolab.HP.API
+    dependencies:
+      - spec
+      - spec-node
