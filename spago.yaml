@@ -3,6 +3,9 @@ package:
   dependencies:
     - console
     - effect
+    - halogen
+    - halogen-hooks
+    - halogen-helix
     - prelude
   test:
     main: Test.Main

@@ -1,9 +1,13 @@
 package:
   name: admin-web
   dependencies:
+    - console
+    - effect
     - halogen
     - halogen-hooks
     - halogen-helix
+    - prelude
+
   test:
     main: Test.Kotolab.HP.Admin
     dependencies: []

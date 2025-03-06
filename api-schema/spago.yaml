@@ -1,4 +1,5 @@
 package: 
   name: api-schema
-  dependencies:  
+  dependencies:
+    - prelude  
     - routing-duplex

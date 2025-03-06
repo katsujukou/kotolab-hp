@@ -1,9 +1,12 @@
 package:
   name: api
   dependencies:
+    - aff
     - api-schema
+    - effect
     - fmt
     - httpurple
+    - prelude
     - routing-duplex
   test:
     main: Test.Kotolab.HP.API
