@@ -12,4 +12,4 @@ main :: Effect Unit
 main = runSpecAndExitProcess [ consoleReporter ] do
   describe "Kotolab.HP.Web" do
     it "should add some tests" do
-      42 `shouldEqual` (40 + 2) 
+      42 `shouldEqual` (40 + 2)
