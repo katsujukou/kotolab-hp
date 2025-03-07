@@ -28,7 +28,6 @@
               nodejs_20
               esbuild
               pnpm
-              wrangler
             ]; 
           };
         }
