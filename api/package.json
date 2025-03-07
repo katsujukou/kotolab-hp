@@ -4,6 +4,11 @@
     "compile": "cd .. && spago build -p api",
     "dev": "cd .. && spago run -p api -m Kotolab.HP.API",
     "test": "cd .. && spago test -p api",
-    "check": "purs-tidy check ./src ./check"
+    "check": "purs-tidy check ./src ./check",
+    "optimize": "cd .. && purs-backend-es build",
+    "bundle": "cd .. && purs-backend-es bundle-app -m Kotolab.HP.API -s -y -p node -t api/dist/index.js",
+    "build": "pnpm run compile && pnpm run optimize && pnpm run bundle",
+    "clean": "cd .. && rm -rf ./.spago ./output ./output-es ./api/dist",
+    "release": "pnpm run clean && pnpm run build"
   }
 }
