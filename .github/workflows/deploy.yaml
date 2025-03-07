@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: main
+    paths-ignore:
+        - 'README.md'
+        - '.gitignore'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [web]
+    steps:
+      # Setup Nix envirionment
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v23
+        with:
+          nix_path: nixpkgs=channel:nixos-24.05
+      - uses: cachix/cachix-action@v14
+        with:
+          name: katsujukou-github
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - uses: nicknovitski/nix-develop@v1
+      - run: nix develop --extra-experimental-features "nix-command flakes"
+
+      # Run CI jobs
+      - name: Install
+        run: spago install -p ${{ matrix.target }} && pnpm -F './${{ matrix.target }}' install
+
+      - name: Release Build
+        run: pnpm -F './${{ matrix.target}}' run release
+      
+      - name: Deploy Pages
+        if: matrix.target == 'web' || matrix.target == 'admin-web'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./dist --project-name=kotolab-hp-${{ matrix.target }}
