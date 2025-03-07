@@ -41,4 +41,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ${{ github.workspace}}/${{ matrix.target }}
           command: pages deploy ./dist --project-name=kotolab-hp-${{ matrix.target }}
