@@ -2,8 +2,10 @@ name: CI
 
 on:
   push:
-    paths: "**/*"
-
+    branches: "*"
+    paths-ignore: 
+      - 'README.md'
+      
 jobs:
   ci:
     runs-on: ubuntu-latest
