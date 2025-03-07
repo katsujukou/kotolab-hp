@@ -4,7 +4,12 @@
     "compile": "cd .. && spago build -p web",
     "dev": "pnpm run compile && cp src/index.dev.js ./index.js && vite",
     "test": "cd .. && spago test -p web",
-    "check": "purs-tidy check ./src ./test"
+    "check": "purs-tidy check ./src ./test",
+    "optimize": "cd .. && purs-backend-es build", 
+    "bundle": "cp src/index.js ./index.js && vite build",
+    "build": "pnpm run compile && pnpm run optimize && pnpm run bundle",
+    "clean": "cd .. && rm -rf ./.spago ./output ./output-es ./web/dist ./web/index.js",
+    "release": "pnpm run clean && pnpm run build"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.11",
