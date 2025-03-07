@@ -1,11 +1,11 @@
 name: CI
 
 on:
-  push:
-    branches: main
-    paths-ignore:
-        - 'README.md'
-        - '.gitignore'
+  workflow_run:
+    workflows: ["ci"]
+    types:
+        - completed
+  
 
 jobs:
   deploy:
@@ -13,6 +13,9 @@ jobs:
     strategy:
       matrix:
         target: [web]
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
     steps:
       # Setup Nix envirionment
       - uses: actions/checkout@v3
