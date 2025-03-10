@@ -1,4 +1,4 @@
-package: 
+package:
   name: web
   dependencies:
     - api-schema
@@ -6,11 +6,13 @@ package:
     - effect
     - fmt
     - halogen
-    - halogen-hooks
     - halogen-helix
+    - halogen-hooks
+    - js-promise-aff
     - prelude
+    - routing
   test:
     main: Test.Kotolab.HP.Web
-    dependencies: 
+    dependencies:
       - spec
       - spec-node

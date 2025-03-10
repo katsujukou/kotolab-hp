@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import tailwindCss from "@tailwindcss/vite";
+import * as path from "node:path";
 
 export default defineConfig({
   server: {
@@ -9,5 +10,10 @@ export default defineConfig({
   },
   plugins: [
     tailwindCss(),
-  ]
+  ],
+  resolve: {
+    alias: {
+      '@assets': path.resolve(__dirname, "assets")
+    }
+  }
 })

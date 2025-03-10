@@ -351,7 +351,9 @@
             "halogen",
             "halogen-helix",
             "halogen-hooks",
-            "prelude"
+            "js-promise-aff",
+            "prelude",
+            "routing"
           ],
           "build_plan": [
             "aff",
@@ -393,6 +395,7 @@
             "invariant",
             "js-date",
             "js-promise",
+            "js-promise-aff",
             "js-uri",
             "lazy",
             "lcg",
@@ -414,8 +417,10 @@
             "random",
             "record",
             "refs",
+            "routing",
             "routing-duplex",
             "safe-coerce",
+            "semirings",
             "st",
             "strings",
             "tailrec",
@@ -426,6 +431,7 @@
             "unfoldable",
             "unsafe-coerce",
             "unsafe-reference",
+            "validation",
             "web-clipboard",
             "web-dom",
             "web-events",
@@ -1733,6 +1739,16 @@
         "prelude"
       ]
     },
+    "js-promise-aff": {
+      "type": "registry",
+      "version": "1.0.0",
+      "integrity": "sha256-s9kml9Ei74hKlMMg41yyZp4GkbmYUwaH+gBWWrdhwec=",
+      "dependencies": [
+        "aff",
+        "foreign",
+        "js-promise"
+      ]
+    },
     "js-uri": {
       "type": "registry",
       "version": "3.1.0",
@@ -2303,6 +2319,30 @@
         "prelude"
       ]
     },
+    "routing": {
+      "type": "registry",
+      "version": "11.0.0",
+      "integrity": "sha256-h2ZehllxQlfJDYh6Rlj0VySlJwqJvY4LMkb7p8cjxLs=",
+      "dependencies": [
+        "aff",
+        "console",
+        "control",
+        "effect",
+        "either",
+        "foldable-traversable",
+        "integers",
+        "js-uri",
+        "lists",
+        "maybe",
+        "numbers",
+        "partial",
+        "prelude",
+        "semirings",
+        "tuples",
+        "validation",
+        "web-html"
+      ]
+    },
     "routing-duplex": {
       "type": "registry",
       "version": "0.7.0",
@@ -2333,6 +2373,17 @@
       "integrity": "sha256-a1ibQkiUcbODbLE/WAq7Ttbbh9ex+x33VCQ7GngKudU=",
       "dependencies": [
         "unsafe-coerce"
+      ]
+    },
+    "semirings": {
+      "type": "registry",
+      "version": "7.0.0",
+      "integrity": "sha256-2qGNMxVYns7RJxZd1uGtJbGTeVl/6Ozsz9OM5gRM61A=",
+      "dependencies": [
+        "foldable-traversable",
+        "lists",
+        "newtype",
+        "prelude"
       ]
     },
     "spec": {
@@ -2539,6 +2590,19 @@
         "psci-support",
         "tuples",
         "unsafe-coerce"
+      ]
+    },
+    "validation": {
+      "type": "registry",
+      "version": "6.0.0",
+      "integrity": "sha256-kfFailaIW4spGxbRk4261z/RGT0Sb7Dx5f3qihy0MTw=",
+      "dependencies": [
+        "bifunctors",
+        "control",
+        "either",
+        "foldable-traversable",
+        "newtype",
+        "prelude"
       ]
     },
     "variant": {
