@@ -4,15 +4,20 @@ import Unsafe.Coerce (unsafeCoerce)
 
 foreign import data AssetURL :: Type
 
-foreign import assets
-  :: { icons ::
-         { menu :: AssetURL
-         , close :: AssetURL
-         , githubMark :: AssetURL
-         , twitterLogo :: AssetURL
-         , iconEmail :: AssetURL
-         }
-     }
+type Assets =
+  { icons ::
+      { menu :: AssetURL
+      , close :: AssetURL
+      , githubMark :: AssetURL
+      , twitterLogo :: AssetURL
+      , iconEmail :: AssetURL
+      }
+  , images ::
+      { selfy :: AssetURL
+      }
+  }
+
+foreign import assets :: Assets
 
 fromAssetURL :: AssetURL -> String
 fromAssetURL = unsafeCoerce

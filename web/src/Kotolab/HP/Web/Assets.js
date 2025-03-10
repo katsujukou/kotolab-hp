@@ -3,7 +3,7 @@ import iconClose from "@assets/icon/close.svg";
 import iconGithub from "@assets/icon/github-mark.svg";
 import iconTwitter from "@assets/icon/twitter-logo.svg";
 import iconEmail from "@assets/icon/email.svg";
-
+import imageSelfy from "@assets/images/selfy.jpeg";
 
 export const assets = {
   icons: {
@@ -12,5 +12,8 @@ export const assets = {
     githubMark: iconGithub,
     twitterLogo: iconTwitter,
     iconEmail: iconEmail
+  },
+  images: {
+    selfy: imageSelfy
   }
 }
