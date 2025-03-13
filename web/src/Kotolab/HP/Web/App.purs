@@ -69,7 +69,7 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
       -- メインビュー 
       , HH.div [ HP.class_ $ ClassName "flex-1 bg-pink-50 " ]
           [ HH.div
-              [ HP.class_ $ ClassName "w-full px-5 sm:w-1/2 sm:mx-auto" ]
+              [ HP.class_ $ ClassName "w-full px-5 sm:w-2/3 sm:mx-auto" ]
               [ renderRouterView ctx
               ]
           ]

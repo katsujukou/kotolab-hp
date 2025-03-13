@@ -14,6 +14,7 @@ type Assets =
       }
   , images ::
       { selfy :: AssetURL
+      , frameLeft :: AssetURL
       }
   }
 

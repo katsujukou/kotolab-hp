@@ -62,10 +62,10 @@ make = Hooks.component \_ _ -> Hooks.do
   Hooks.pure (render ctx)
   where
   render ctx = do
-    HH.div [ HP.class_ $ ClassName "flex flex-col items-center" ]
+    HH.div [ HP.class_ $ ClassName "flex flex-col items-center p-4" ]
       [ pageTitle
-          { label: "お問い合わせ"
-          , sub: "CONTACT"
+          { label: "おといあわせ"
+          , sub: "Contact"
           }
 
       , HH.div [ HP.class_ $ ClassName "flex justify-center items-center m-1 " ] $ fold

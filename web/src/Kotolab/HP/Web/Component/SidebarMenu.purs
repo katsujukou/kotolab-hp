@@ -92,10 +92,10 @@ make = Hooks.component \{ queryToken, outputToken } inps -> Hooks.do
     let
       cls =
         Fmt.fmt
-          @"hover:text-blue-500 text-lg my-3 \
+          @"hover:text-blue-500 text-lg my-3 font-genei \
           \ {activeCls}"
           { activeCls:
-              if ctx.currentRoute == Just menuItem.route then "text-blue-500"
+              if ctx.currentRoute == Just menuItem.route then "text-pink-400"
               else ""
           }
     HH.div

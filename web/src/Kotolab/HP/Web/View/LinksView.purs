@@ -18,8 +18,8 @@ make = Hooks.component \_ _ -> Hooks.do
       [ HP.class_ $ ClassName "flex flex-col items-center p-4"
       ]
       [ pageTitle
-          { label: "リンク集"
-          , sub: "LINKS"
+          { label: "リンク"
+          , sub: "Links"
           }
       ]
 

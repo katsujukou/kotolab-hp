@@ -22,7 +22,7 @@ make = Hooks.component \_ _ -> Hooks.do
     let
       copywrite = Fmt.fmt @"© {year} by Koto" { year: unsafePerformEffect $ nowDate <#> year >>> fromEnum }
 
-    HH.div [ HP.class_ $ ClassName "flex flex-col items-center text-sm text-gray-500" ]
+    HH.div [ HP.class_ $ ClassName "flex flex-col items-center text-sm text-gray-500 font-josefin-sans" ]
       [ HH.p [ HP.class_ $ ClassName "my-1" ] [ HH.text copywrite ]
       , HH.p [ HP.class_ $ ClassName "my-1" ]
           [ HH.a

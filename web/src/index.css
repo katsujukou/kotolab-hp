@@ -1,1 +1,105 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'GenEi Roman Notes';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url("../assets/fonts/gen-ei-roman-notes-w9.otf") format("opentype");
+}
+
+@font-face {
+  font-family: 'Yomogi';
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+  src: url("../assets/fonts/yomogi-regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Kaisei Decol';
+  font-display: swap;
+  font-style: normal;
+  font-weight: lighter;
+  src: url("../assets/fonts/kaisei-decol-medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Kaisei Decol';
+  font-display: swap;
+  font-style: normal;
+  font-weight: normal;
+  src: url("../assets/fonts/kaisei-decol-regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Kaisei Decol';
+  font-display: swap;
+  font-style: normal;
+  font-weight: bold;
+  src: url("../assets/fonts/kaisei-decol-bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Nanakyun';
+  src: url("../assets/fonts/NanaKyun.otf") format("opentype");
+}
+
+@font-face {
+  font-family: 'Miama';
+  src: url("../assets/fonts/Miama.otf") format("opentype");
+}
+
+@font-face {
+  font-family: 'Allura';
+  src: url("../assets/fonts/Allura-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url("../assets/fonts/JosefinSans-Thin.ttf") format("truetype");
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url("../assets/fonts/JosefinSans-ThinItalic.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url("../assets/fonts/JosefinSans-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url("../assets/fonts/JosefinSans-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url("../assets/fonts/JosefinSans-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url("../assets/fonts/JosefinSans-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: italic;
+}
+
+@theme {
+  --font-genei: 'GenEi Roman Notes';
+  --font-retro: 'Kaisei Decol', Yomogi;
+  --font-yomogi: Yomogi;
+  --font-nanakyun: Nanakyun;
+  --font-miama: Miama;
+  --font-allura: Allura;
+  --font-josefin-sans: 'Josefin Sans';
+}
