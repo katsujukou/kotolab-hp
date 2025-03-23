@@ -3,9 +3,11 @@ package:
   dependencies:
     - aff
     - api-schema
+    - codec-argonaut
     - effect
     - fmt
     - httpurple
+    - js-promise-aff
     - prelude
     - routing-duplex
   test:

@@ -14,6 +14,7 @@ export default {
       "miama": ["Miama"],
       "allura": ["Allura"],
       "josefin-sans": ['"Josefin Sans"'],
+      "codeblock": ["'HackGen Console NF'"]
     },
     plugins: [],
   },

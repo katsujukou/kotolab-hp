@@ -4,13 +4,13 @@ import Prelude
 
 import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
-import Effect.Aff.Class (class MonadAff)
 import Halogen (ClassName(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Hooks (useState)
 import Halogen.Hooks as Hooks
+import Kotolab.HP.Web.Capabilities.MonadAjax (class MonadAjax)
 import Kotolab.HP.Web.Component.Footer as Footer
 import Kotolab.HP.Web.Component.Header as Header
 import Kotolab.HP.Web.Component.SidebarMenu as SidebarMenu
@@ -20,19 +20,20 @@ import Kotolab.HP.Web.Hooks.UseApp (useApp)
 import Kotolab.HP.Web.Routes (Route(..))
 import Kotolab.HP.Web.View.ContactView as ContactView
 import Kotolab.HP.Web.View.HomeView as HomeView
-import Kotolab.HP.Web.View.LinksView as LinksView
 import Kotolab.HP.Web.View.ProfileView as ProfileView
+import Kotolab.HP.Web.View.WorksView as WorksView
 import Type.Proxy (Proxy(..))
 
 menuItems :: Array MenuItem
 menuItems =
   [ { label: "HOME", route: Home }
   , { label: "PROFILE", route: Profile }
+  , { label: "WORKS", route: Works }
   , { label: "CONTACT", route: Contact }
-  , { label: "LINKS", route: Links }
+  -- , { label: "LINKS", route: Links }
   ]
 
-make :: forall q i o m. MonadAff m => H.Component q i o m
+make :: forall q i o m. MonadAjax m => H.Component q i o m
 make = Hooks.component \{ slotToken } _ -> Hooks.do
   appApi <- useApp
   dispayToggleBtn /\ dispayToggleBtnId <- useState true
@@ -75,7 +76,9 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
           ]
 
       -- フッター
-      , HH.div [ HP.class_ $ ClassName "h-16 flex items-center justify-center bg-white text-gray-500" ]
+      , HH.div
+          [ HP.class_ $ ClassName "h-16 flex items-center justify-center bg-white text-gray-500 border-t border-t-pink-200 "
+          ]
           [ HH.slot_ (Proxy :: _ "footer") unit Footer.make {}
           ]
 
@@ -98,5 +101,6 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
     Just r -> case r of
       Home -> HH.slot_ (Proxy :: _ "make-view") unit HomeView.make {}
       Profile -> HH.slot_ (Proxy :: _ "profile-view") unit ProfileView.make {}
+      Works -> HH.slot_ (Proxy :: _ "workw-view") unit WorksView.make {}
       Contact -> HH.slot_ (Proxy :: _ "contact-view") unit ContactView.make {}
-      Links -> HH.slot_ (Proxy :: _ "links-view") unit LinksView.make {}
+-- Links -> HH.slot_ (Proxy :: _ "links-view") unit LinksView.make {}

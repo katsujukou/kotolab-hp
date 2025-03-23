@@ -1,6 +1,8 @@
 package:
   name: web
   dependencies:
+    - affjax
+    - affjax-web
     - api-schema
     - console
     - effect

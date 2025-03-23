@@ -11,10 +11,17 @@ type Assets =
       , githubMark :: AssetURL
       , twitterLogo :: AssetURL
       , iconEmail :: AssetURL
+      , blackCoverBook :: AssetURL
+      , law :: AssetURL
+      , homeBlue :: AssetURL
+      , tagGreen :: AssetURL
+      , packageRibboned :: AssetURL
+      , purescript :: AssetURL
       }
   , images ::
       { selfy :: AssetURL
       , frameLeft :: AssetURL
+      , roseFrame :: AssetURL
       }
   }
 

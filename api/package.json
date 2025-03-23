@@ -1,14 +1,17 @@
-{ 
+{
   "type": "module",
   "scripts": {
+    "dev": "pnpm run compile && wrangler dev",
     "compile": "cd .. && spago build -p api",
-    "dev": "cd .. && spago run -p api -m Kotolab.HP.API",
     "test": "cd .. && spago test -p api",
     "check": "purs-tidy check ./src ./check",
     "optimize": "cd .. && purs-backend-es build",
-    "bundle": "cd .. && purs-backend-es bundle-app -m Kotolab.HP.API -s -y -p node -t api/dist/index.js",
+    "bundle": "cd .. && purs-backend-es bundle-module -m Kotolab.HP.API -s -p node -t api/dist/ps-bundle.js",
     "build": "pnpm run compile && pnpm run optimize && pnpm run bundle",
     "clean": "cd .. && rm -rf ./.spago ./output ./output-es ./api/dist",
     "release": "pnpm run clean && pnpm run build"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
   }
 }

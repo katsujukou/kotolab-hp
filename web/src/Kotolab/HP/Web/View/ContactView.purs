@@ -68,7 +68,7 @@ make = Hooks.component \_ _ -> Hooks.do
           , sub: "Contact"
           }
 
-      , HH.div [ HP.class_ $ ClassName "flex justify-center items-center m-1 " ] $ fold
+      , HH.div [ HP.class_ $ ClassName "flex justify-center items-center m-1 gap-3" ] $ fold
           [ [ HH.button
                 [ HP.class_ $ ClassName "m-1 "
                 , HE.onClick \_ -> ctx.handleEmailIconClick
@@ -81,15 +81,38 @@ make = Hooks.component \_ _ -> Hooks.do
             ]
           , externalLinks <#> renderExternalLink ctx
           ]
+      , HH.div [ HP.class_ $ ClassName "my-5" ]
+          [ HH.p
+              [ HP.class_ $ ClassName "font-josefin-sans text-pink-700" ]
+              [ HH.text "ことへのご連絡（お仕事の相談や、勉強会やLT会での登壇の依頼など）は、メール・TwitterのDM等をご利用ください。"
+              ]
+          , HH.ul [ HP.class_ $ ClassName "my-3 text-gray-700" ]
+              $ renderRemarks
+          ]
       ]
+
+  renderRemarks = do
+    let
+      remarks =
+        [ "当方、社不につきなかなか返信が返ってこないかもしれませんがご容赦ください"
+        , "HACK.BAR出勤時に直接お店に来ていただくのが一番手っ取り早く確実です"
+        , "当サイトはリンクフリーです"
+        ]
+    remarks <#> \remark -> do
+      HH.li [ HP.class_ $ ClassName "flex font-yomogi gap-3 mb-3" ]
+        [ HH.span [ HP.class_ $ ClassName "no-selection" ]
+            [ HH.text "＊" ]
+        , HH.p []
+            [ HH.text remark ]
+        ]
 
   renderExternalLink _ item = do
     HH.a
-      [ HP.class_ $ ClassName "m-1 "
+      [ HP.class_ $ ClassName "h-8 w-8"
       , HP.href item.href
       ]
       [ HH.img
-          [ HP.class_ $ ClassName "h-8 w-8"
+          [ HP.class_ $ ClassName ""
           , HP.src $ fromAssetURL item.icon
           ]
       ]

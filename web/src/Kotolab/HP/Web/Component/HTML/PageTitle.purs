@@ -5,7 +5,6 @@ import Prelude
 import Halogen.HTML (ClassName(..))
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Kotolab.HP.Web.Assets (assets, fromAssetURL)
 
 type PageTitleProps =
   { label :: String
@@ -25,12 +24,12 @@ pageTitle props = do
 
     [ HH.div [ HP.class_ $ ClassName "flex flex-col items-center mx-5 " ]
         [ HH.h1
-            [ HP.class_ $ ClassName "text-[2.4rem] text-pink-500 font-allura" ]
+            [ HP.class_ $ ClassName "text-[2.4rem] text-pink-700 font-josefin-sans" ]
             [ HH.text props.sub ]
         , HH.h2
-            [ HP.class_ $ ClassName "text-xs text-gray-500 " ]
+            [ HP.class_ $ ClassName "text-sm text-gray-500 " ]
             [ HH.text "─"
-            , HH.span [ HP.class_ $ ClassName "font-nanakyun mx-1" ] [ HH.text props.label ]
+            , HH.span [ HP.class_ $ ClassName "font-yomogi mx-1" ] [ HH.text props.label ]
             , HH.text "─"
             ]
         ]

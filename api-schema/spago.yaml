@@ -1,5 +1,6 @@
-package: 
+package:
   name: api-schema
   dependencies:
-    - prelude  
+    - codec-argonaut
+    - prelude
     - routing-duplex

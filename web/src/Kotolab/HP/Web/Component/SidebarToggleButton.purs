@@ -9,7 +9,6 @@ import Data.Tuple.Nested ((/\))
 import Effect.Aff (Milliseconds(..))
 import Effect.Aff as Aff
 import Effect.Aff.Class (class MonadAff)
-import Effect.Class.Console as Console
 import Fmt as Fmt
 import Halogen (ClassName(..), liftAff)
 import Halogen as H
@@ -57,14 +56,15 @@ make = Hooks.component \{ outputToken } inps -> Hooks.do
 
   let
     handleToggle = do
-      Hooks.raise outputToken Clicked
-      s0 <- Hooks.get btnStateId
-      Hooks.put rotatingId true
-      liftAff $ Aff.delay (Milliseconds 400.0)
-      let s1 = flip s0
-      Hooks.put btnStateId s1
-      Hooks.put rotatingId false
-      Hooks.raise outputToken $ ToggleDone s1
+      unlessM (Hooks.get rotatingId) do
+        Hooks.raise outputToken Clicked
+        s0 <- Hooks.get btnStateId
+        Hooks.put rotatingId true
+        liftAff $ Aff.delay (Milliseconds 400.0)
+        let s1 = flip s0
+        Hooks.put btnStateId s1
+        Hooks.put rotatingId false
+        Hooks.raise outputToken $ ToggleDone s1
 
     ctx =
       { handleToggle
@@ -76,7 +76,6 @@ make = Hooks.component \{ outputToken } inps -> Hooks.do
   where
   useInputValueEffect { btnStateId, rotatingId } deps@{ value } = Hooks.captures deps Hooks.useTickEffect do
     cur <- Hooks.get btnStateId
-    Console.logShow { cur, value }
     when (cur == Hidden && value == true) do
       Hooks.put rotatingId true
       liftAff $ Aff.delay (Milliseconds 400.0)
@@ -89,8 +88,8 @@ make = Hooks.component \{ outputToken } inps -> Hooks.do
     let
       btnCls =
         Fmt.fmt
-          @"fixed top-3 right-3 bg-pink-300 w-[40px] h-[40px] rounded-lg \
-          \ flex justify-center items-center active:bg-pink-400 \
+          @"fixed top-3 right-3 \
+          \ flex justify-center items-center bg-[rgba(255,255,255,0.5)] rounded-full \
           \ transition-all duration-400 rotate-{rotate}\
           \ opacity-{opacity} {pointer_event}"
           { rotate: if ctx.rotating ^ (shouldDisplay ctx.btnState) then "0" else "180"
@@ -103,8 +102,10 @@ make = Hooks.component \{ outputToken } inps -> Hooks.do
         [ HP.class_ $ ClassName btnCls
         , HE.onClick \_ -> ctx.handleToggle
         ]
-        [ HH.img
-            [ HP.src $ fromAssetURL assets.icons.menu
-            , HP.class_ $ ClassName "w-[32px] h-[32px]"
+        [ HH.span [ HP.class_ $ ClassName "fixed font-josefin-sans text-pink-900 font-light text-xs" ]
+            [ HH.text "MENU" ]
+        , HH.img
+            [ HP.src $ fromAssetURL assets.images.roseFrame
+            , HP.class_ $ ClassName "top-0 left-0 w-[64px] h-[64px]"
             ]
         ]

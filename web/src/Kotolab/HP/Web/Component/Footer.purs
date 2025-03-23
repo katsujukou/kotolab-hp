@@ -19,11 +19,8 @@ make = Hooks.component \_ _ -> Hooks.do
   Hooks.pure $ render {}
   where
   render _ = do
-    let
-      copywrite = Fmt.fmt @"© {year} by Koto" { year: unsafePerformEffect $ nowDate <#> year >>> fromEnum }
-
-    HH.div [ HP.class_ $ ClassName "flex flex-col items-center text-sm text-gray-500 font-josefin-sans" ]
-      [ HH.p [ HP.class_ $ ClassName "my-1" ] [ HH.text copywrite ]
+    HH.div [ HP.class_ $ ClassName "flex flex-col items-center text-sm text-gray-500 font-josefin-sans " ]
+      [ HH.p [ HP.class_ $ ClassName "my-1" ] [ HH.text "© 2025 Koto. All rights reserved." ]
       , HH.p [ HP.class_ $ ClassName "my-1" ]
           [ HH.a
               [ HP.target "_blank"

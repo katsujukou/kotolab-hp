@@ -17,10 +17,12 @@ make = Hooks.component \_ _ -> Hooks.do
     HH.div
       [ HP.class_ $ ClassName "flex flex-col items-center"
       ]
-      [ pageTitle
-          { label: "ことさんちへ　ようこそ！"
-          , sub: ""
-          }
+      [ HH.div [ HP.class_ $ ClassName "mt-9 mb-6" ]
+          [ pageTitle
+              { sub: "Koto's Home"
+              , label: "ことさんちへ　ようこそ！"
+              }
+          ]
       , HH.div
           [ HP.class_ $ ClassName ""
           ]

@@ -21,5 +21,10 @@ make = Hooks.component \_ _ -> Hooks.do
           { label: "リンク"
           , sub: "Links"
           }
+      , HH.div []
+          [ HH.p []
+              [ HH.text "当サイトはリンクフリーです"
+              ]
+          ]
       ]
 

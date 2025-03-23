@@ -10,8 +10,10 @@ import Routing.Duplex.Generic.Syntax ((/))
 data Route
   = Home
   | Profile
+  | Works
   | Contact
-  | Links
+
+-- | Links
 
 derive instance Eq Route
 derive instance Generic Route _
@@ -20,6 +22,7 @@ route :: RouteDuplex' Route
 route = root $ sum
   { "Home": noArgs
   , "Profile": "profile" / noArgs
+  , "Works": "work" / noArgs
   , "Contact": "contact" / noArgs
-  , "Links": "links" / noArgs
+  -- , "Links": "links" / noArgs
   }

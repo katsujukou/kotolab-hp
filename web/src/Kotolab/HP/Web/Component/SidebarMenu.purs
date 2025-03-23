@@ -69,9 +69,9 @@ make = Hooks.component \{ queryToken, outputToken } inps -> Hooks.do
         "h-full flex flex-col justify-center items-center"
 
       btnCls =
-        "fixed top-3 right-3 bg-pink-300 w-[40px] h-[40px] rounded-lg \
-        \ flex justify-center items-center active:bg-pink-400 "
-
+        "fixed top-3 right-3 \
+        \ flex justify-center items-center \
+        \ transition-all duration-400"
     HH.div [ HP.class_ $ ClassName cls ]
       [ HH.div
           [ HP.class_ $ ClassName menuCls ] $
@@ -81,9 +81,11 @@ make = Hooks.component \{ queryToken, outputToken } inps -> Hooks.do
           [ HP.class_ $ ClassName btnCls
           , HE.onClick \_ -> ctx.handleCloseBtn
           ]
-          [ HH.img
-              [ HP.src $ fromAssetURL assets.icons.close
-              , HP.class_ $ ClassName "w-[32px] h-[32px]"
+          [ HH.span [ HP.class_ $ ClassName "fixed font-josefin-sans text-pink-900 font-light text-xs" ]
+              [ HH.text "CLOSE" ]
+          , HH.img
+              [ HP.src $ fromAssetURL assets.images.roseFrame
+              , HP.class_ $ ClassName "top-0 left-0 w-[64px] h-[64px]"
               ]
           ]
       ]
@@ -92,10 +94,10 @@ make = Hooks.component \{ queryToken, outputToken } inps -> Hooks.do
     let
       cls =
         Fmt.fmt
-          @"hover:text-blue-500 text-lg my-3 font-genei \
+          @"hover:text-blue-500 text-lg my-3 font-josefin-sans \
           \ {activeCls}"
           { activeCls:
-              if ctx.currentRoute == Just menuItem.route then "text-pink-400"
+              if ctx.currentRoute == Just menuItem.route then "text-pink-700"
               else ""
           }
     HH.div

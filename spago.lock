@@ -17,11 +17,14 @@
           "build_plan": [
             "aff",
             "api-schema",
+            "argonaut-core",
             "arrays",
             "assert",
             "avar",
             "bifunctors",
             "catenable-lists",
+            "codec",
+            "codec-argonaut",
             "console",
             "const",
             "contravariant",
@@ -87,6 +90,7 @@
             "unfoldable",
             "unsafe-coerce",
             "unsafe-reference",
+            "variant",
             "web-clipboard",
             "web-dom",
             "web-events",
@@ -109,19 +113,24 @@
           "dependencies": [
             "aff",
             "api-schema",
+            "codec-argonaut",
             "effect",
             "fmt",
             "httpurple",
+            "js-promise-aff",
             "prelude",
             "routing-duplex"
           ],
           "build_plan": [
             "aff",
             "api-schema",
+            "argonaut-core",
             "arraybuffer-types",
             "arrays",
             "assert",
             "bifunctors",
+            "codec",
+            "codec-argonaut",
             "console",
             "const",
             "contravariant",
@@ -147,6 +156,8 @@
             "integers",
             "invariant",
             "js-date",
+            "js-promise",
+            "js-promise-aff",
             "js-uri",
             "justifill",
             "lazy",
@@ -283,13 +294,17 @@
         "path": "api-schema",
         "core": {
           "dependencies": [
+            "codec-argonaut",
             "prelude",
             "routing-duplex"
           ],
           "build_plan": [
+            "argonaut-core",
             "arrays",
             "assert",
             "bifunctors",
+            "codec",
+            "codec-argonaut",
             "console",
             "const",
             "contravariant",
@@ -301,6 +316,7 @@
             "exceptions",
             "exists",
             "foldable-traversable",
+            "foreign-object",
             "functions",
             "functors",
             "gen",
@@ -315,6 +331,7 @@
             "newtype",
             "nonempty",
             "numbers",
+            "ordered-collections",
             "orders",
             "partial",
             "prelude",
@@ -331,8 +348,10 @@
             "transformers",
             "tuples",
             "type-equality",
+            "typelevel-prelude",
             "unfoldable",
-            "unsafe-coerce"
+            "unsafe-coerce",
+            "variant"
           ]
         },
         "test": {
@@ -344,6 +363,8 @@
         "path": "web",
         "core": {
           "dependencies": [
+            "affjax",
+            "affjax-web",
             "api-schema",
             "console",
             "effect",
@@ -357,12 +378,18 @@
           ],
           "build_plan": [
             "aff",
+            "affjax",
+            "affjax-web",
             "api-schema",
+            "argonaut-core",
+            "arraybuffer-types",
             "arrays",
             "assert",
             "avar",
             "bifunctors",
             "catenable-lists",
+            "codec",
+            "codec-argonaut",
             "console",
             "const",
             "contravariant",
@@ -380,6 +407,7 @@
             "foreign",
             "foreign-object",
             "fork",
+            "form-urlencoded",
             "free",
             "freeap",
             "functions",
@@ -390,6 +418,7 @@
             "halogen-hooks",
             "halogen-subscriptions",
             "halogen-vdom",
+            "http-methods",
             "identity",
             "integers",
             "invariant",
@@ -432,6 +461,7 @@
             "unsafe-coerce",
             "unsafe-reference",
             "validation",
+            "variant",
             "web-clipboard",
             "web-dom",
             "web-events",
@@ -440,7 +470,8 @@
             "web-pointerevents",
             "web-storage",
             "web-touchevents",
-            "web-uievents"
+            "web-uievents",
+            "web-xhr"
           ]
         },
         "test": {
@@ -1079,6 +1110,37 @@
         "unsafe-coerce"
       ]
     },
+    "affjax": {
+      "type": "registry",
+      "version": "13.0.0",
+      "integrity": "sha256-blYfaoW4FYIrIdvmT4sB7nN7BathFaEfZuiVLPmHJOo=",
+      "dependencies": [
+        "aff",
+        "argonaut-core",
+        "arraybuffer-types",
+        "foreign",
+        "form-urlencoded",
+        "http-methods",
+        "integers",
+        "media-types",
+        "nullable",
+        "refs",
+        "unsafe-coerce",
+        "web-xhr"
+      ]
+    },
+    "affjax-web": {
+      "type": "registry",
+      "version": "1.0.0",
+      "integrity": "sha256-n/yJUk1wMxMN7fJ2TJ+fELgieomy29N617yOshAnrc0=",
+      "dependencies": [
+        "aff",
+        "affjax",
+        "either",
+        "maybe",
+        "prelude"
+      ]
+    },
     "ansi": {
       "type": "registry",
       "version": "7.0.0",
@@ -1199,6 +1261,28 @@
         "prelude",
         "tuples",
         "unfoldable"
+      ]
+    },
+    "codec": {
+      "type": "registry",
+      "version": "6.1.0",
+      "integrity": "sha256-6vMLNlsJxQarVQ9cn1FYfl5x6opfzxAza15SzRdxFxQ=",
+      "dependencies": [
+        "bifunctors",
+        "profunctor"
+      ]
+    },
+    "codec-argonaut": {
+      "type": "registry",
+      "version": "10.0.0",
+      "integrity": "sha256-n80U8KiBk333qfQwDobSZWiyNg9BA3CL/EwFznIdRwI=",
+      "dependencies": [
+        "argonaut-core",
+        "codec",
+        "foreign-object",
+        "ordered-collections",
+        "type-equality",
+        "variant"
       ]
     },
     "console": {
@@ -1436,6 +1520,20 @@
         "aff"
       ]
     },
+    "form-urlencoded": {
+      "type": "registry",
+      "version": "7.0.0",
+      "integrity": "sha256-WUzk8DTjrbPVHKZ5w7XpPBO6ci6xFhvYguHp6RvX+18=",
+      "dependencies": [
+        "foldable-traversable",
+        "js-uri",
+        "maybe",
+        "newtype",
+        "prelude",
+        "strings",
+        "tuples"
+      ]
+    },
     "free": {
       "type": "registry",
       "version": "7.1.0",
@@ -1631,6 +1729,16 @@
         "record",
         "tuples",
         "variant"
+      ]
+    },
+    "http-methods": {
+      "type": "registry",
+      "version": "6.0.0",
+      "integrity": "sha256-Orr7rbDGcp7qoqmUMXPRMjBx+C4jqOQcFe9+gE3nMgU=",
+      "dependencies": [
+        "either",
+        "prelude",
+        "strings"
       ]
     },
     "httpurple": {
@@ -2703,6 +2811,19 @@
       "version": "5.0.0",
       "integrity": "sha256-5I+ut9JYno3wowti3vJGs1afKCm1ucppKuy+zhuSyss=",
       "dependencies": [
+        "web-html"
+      ]
+    },
+    "web-xhr": {
+      "type": "registry",
+      "version": "5.0.1",
+      "integrity": "sha256-3dbIPVG66S+hPrgEVnpD78hrGjE7qlBbsReWOz89Ios=",
+      "dependencies": [
+        "arraybuffer-types",
+        "datetime",
+        "http-methods",
+        "web-dom",
+        "web-file",
         "web-html"
       ]
     }

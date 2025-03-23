@@ -1,0 +1,1 @@
+export * as default from "../../output/Kotolab.HP.API/index.js";
