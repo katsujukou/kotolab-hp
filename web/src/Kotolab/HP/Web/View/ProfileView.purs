@@ -76,7 +76,7 @@ make = Hooks.component \_ _ -> Hooks.do
               ]
 
           , HH.div
-              [ HP.class_ $ ClassName "flex flex-wrap gap-3 items-center " ]
+              [ HP.class_ $ ClassName "flex flex-wrap gap-x-5 gap-y-7 items-center " ]
               [ renderActivity
                   "関数型プログラミング愛好家として"
                   [ HH.text "PureScriptをこよなく愛し、ブログの執筆やライブラリ作成などで日々布教活動中。"
@@ -154,7 +154,7 @@ make = Hooks.component \_ _ -> Hooks.do
       ]
 
   renderActivity title contentHtmls = do
-    HH.div [ HP.class_ $ ClassName "m-2 sm:m-4 w-80 sm:col-span-1" ]
+    HH.div [ HP.class_ $ ClassName "w-80 sm:col-span-1" ]
       [ HH.h3
           [ HP.class_ $ ClassName "my-4 text-center font-retro text-[1.2rem] font-bold sm:my-2 text-pink-700" ]
           [ HH.text title ]
