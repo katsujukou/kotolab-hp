@@ -13,6 +13,6 @@ make = Hooks.component \_ _ -> Hooks.do
   Hooks.pure $ render {}
   where
   render _ = do
-    HH.div [ HP.class_ $ ClassName "flex items-center justify-center p-3" ]
-      [ HH.text "ことさんち"
+    HH.div [ HP.class_ $ ClassName "flex items-center justify-center p-3 font-josefin-sans text-gray-500" ]
+      [ HH.text "- Koto's Home -"
       ]

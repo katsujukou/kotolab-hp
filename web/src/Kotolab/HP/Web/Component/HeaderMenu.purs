@@ -12,7 +12,7 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Halogen.Hooks as Hooks
 import Kotolab.HP.Web.Component.Types (MenuItem)
-import Kotolab.HP.Web.Hooks.UseApp (useApp)
+import Kotolab.HP.Web.Hooks.UseNavigate (useNavigate)
 
 type Input =
   { menuItems :: Array MenuItem
@@ -20,14 +20,14 @@ type Input =
 
 make :: forall q o m. MonadEffect m => H.Component q Input o m
 make = Hooks.component \_ inps -> Hooks.do
-  appApi <- useApp
+  navigatorApi <- useNavigate
   let
     handleMenuItem menuItem = do
-      appApi.navigateTo menuItem.route
+      navigatorApi.navigateTo menuItem.route
 
     ctx =
       { menuItems: inps.menuItems
-      , currentRoute: appApi.currentRoute
+      , currentRoute: navigatorApi.currentRoute
       , handleMenuItem
       }
 
@@ -35,7 +35,7 @@ make = Hooks.component \_ inps -> Hooks.do
   where
   render ctx = do
     HH.div
-      [ HP.class_ $ ClassName "w-full flex items-center justify-center gap-7 p-4" ] $
+      [ HP.class_ $ ClassName "w-full flex items-center justify-center gap-7 p-4 border border-0 border-b-1 border-b-pink-200 " ] $
       ctx.menuItems <#> \menuItem -> do
         let
           menuItemCls = Fmt.fmt

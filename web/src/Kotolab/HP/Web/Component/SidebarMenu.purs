@@ -15,7 +15,7 @@ import Halogen.Hooks (useQuery, useState)
 import Halogen.Hooks as Hooks
 import Kotolab.HP.Web.Assets (assets, fromAssetURL)
 import Kotolab.HP.Web.Component.Types (MenuItem)
-import Kotolab.HP.Web.Hooks.UseApp (useApp)
+import Kotolab.HP.Web.Hooks.UseNavigate (useNavigate)
 
 type Input =
   { value :: Boolean
@@ -28,7 +28,8 @@ data Output = CloseClicked
 
 make :: forall m. MonadEffect m => H.Component Query Input Output m
 make = Hooks.component \{ queryToken, outputToken } inps -> Hooks.do
-  appApi <- useApp
+  -- appApi <- useApp
+  { currentRoute, navigateTo } <- useNavigate
   display /\ displayId <- useState inps.value
 
   useQuery queryToken
@@ -43,13 +44,13 @@ make = Hooks.component \{ queryToken, outputToken } inps -> Hooks.do
       Hooks.raise outputToken CloseClicked
 
     handleNavigate to = do
-      appApi.navigateTo to
+      navigateTo to
       handleCloseBtn
 
     ctx =
       { display
       , handleCloseBtn
-      , currentRoute: appApi.currentRoute
+      , currentRoute: currentRoute
       , menuItems: inps.menuItems
       , handleNavigate
       }

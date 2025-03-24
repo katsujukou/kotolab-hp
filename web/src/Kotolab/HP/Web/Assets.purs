@@ -16,6 +16,7 @@ type Assets =
       , homeBlue :: AssetURL
       , tagGreen :: AssetURL
       , packageRibboned :: AssetURL
+      , backToTop :: AssetURL
       , purescript :: AssetURL
       }
   , images ::

@@ -12,6 +12,7 @@ import iconLaw from "@assets/icon/law.svg";
 import iconHomeBlue from "@assets/icon/home-blue.svg";
 import iconTagGreen from "@assets/icon/tag-green.svg";
 import iconPackageRibboned from "@assets/icon/package-ribboned.svg";
+import iconBackToTop from "@assets/icon/back-to-top.svg";
 
 export const assets = {
   icons: {
@@ -25,6 +26,7 @@ export const assets = {
     homeBlue: iconHomeBlue,
     tagGreen: iconTagGreen,
     packageRibboned: iconPackageRibboned,
+    backToTop: iconBackToTop,
     purescript: iconPureScript,
   },
   images: {

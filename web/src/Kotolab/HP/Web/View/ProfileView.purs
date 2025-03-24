@@ -66,7 +66,7 @@ make = Hooks.component \_ _ -> Hooks.do
           ]
 
       , HH.div
-          [ HP.class_ $ ClassName "w-full flex flex-col items-center"
+          [ HP.class_ $ ClassName "w-full flex flex-col items-center "
           ]
           [ HH.h2
               [ HP.class_ $ ClassName "w-full py-3 flex justify-center items-center border border-dashed border-gray-400 border-l-0 border-r-0 mt-5 mb-4" ]
