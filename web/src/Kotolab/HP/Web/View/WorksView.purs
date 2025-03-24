@@ -7,11 +7,9 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Hooks as Hooks
-import Kotolab.HP.Web.Assets (assets, fromAssetURL)
 import Kotolab.HP.Web.Capabilities.MonadAjax (class MonadAjax)
 import Kotolab.HP.Web.Component.HTML.PageTitle (pageTitle)
 import Kotolab.HP.Web.Component.OpenSourceWork as OSS
-import Kotolab.HP.Web.Component.PureScriptBadge as PureScriptBadge
 import Type.Proxy (Proxy(..))
 
 -- サーバから取ってきても良いかも
@@ -35,6 +33,19 @@ ossWorks =
     }
   ]
 
+demoWorks =
+  [ { name: "TAPL in PureScript"
+    , description: do
+        HH.p []
+          -- [ hyperlink
+          --     { href: ""
+          --     , inner: "Types And Programming Languages"
+          --     }
+          [ HH.text "を読むにあたり、本の中で作られている型チェッカー/インタープリタをPureScriptで実装したもの。"
+          ]
+    }
+  ]
+
 make :: forall q i o m. MonadAjax m => H.Component q i o m
 make = Hooks.component \_ _ -> Hooks.do
   Hooks.pure (render {})
@@ -54,6 +65,17 @@ make = Hooks.component \_ _ -> Hooks.do
           , HH.div [] $
               ossWorks <#> \libInfo -> do
                 HH.slot_ (Proxy :: _ "open-source-work") libInfo.name OSS.make { libInfo }
+          ]
+      , HH.div []
+          [ HH.h3 []
+              [ HH.text "♥デモンストレーション目的で作成したプロジェクト" ]
+          , HH.div [] $
+              demoWorks <#> \demoInfo -> do
+                HH.div []
+                  [ HH.text demoInfo.name
+                  , HH.p []
+                      [ demoInfo.description ]
+                  ]
           ]
       --   , HH.div []
       --       [ HH.h3 [ HP.class_ $ ClassName "text-lg font-retro font-bold text-pink-700" ]

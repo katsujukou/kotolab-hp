@@ -2,11 +2,6 @@ module Kotolab.HP.Web.Component.Footer where
 
 import Prelude
 
-import Data.Date (year)
-import Data.Enum (fromEnum)
-import Effect.Now (nowDate)
-import Effect.Unsafe (unsafePerformEffect)
-import Fmt as Fmt
 import Halogen (ClassName(..))
 import Halogen as H
 import Halogen.HTML as HH

@@ -31,14 +31,38 @@ make = Hooks.component \_ { libInfo } -> Hooks.do
   where
   render ctx@{ libInfo } = do
     HH.div [ HP.class_ $ ClassName "border border-gray-200 shadow-md my-5 bg-white p-5 " ]
-      [ HH.a
-          [ HP.class_ $ ClassName "flex items-center mb-2"
-          , HP.href libInfo.home
-          , HP.target "_blank"
-          , HP.rel "noopener"
-          ]
+      [ HH.div [ HP.class_ $ ClassName "flex items-center" ]
           [ HH.div [ HP.class_ $ ClassName "text-lg font-codeblock font-bold text-pink-700" ]
               [ HH.text libInfo.name
+              ]
+          , HH.div [ HP.class_ $ ClassName "ml-auto" ]
+              [ HH.div [ HP.class_ $ ClassName "flex flex-row-reverse gap-3" ]
+                  [ -- document link
+                    HH.a
+                      [ HP.class_ $ ClassName "cursor-pointer flex items-center"
+                      , HP.href libInfo.docs
+                      , HP.target "_blank"
+                      , HP.rel "noopener"
+                      ]
+                      [ HH.img
+                          [ HP.class_ $ ClassName " w-4 h-4"
+                          , HP.src $ fromAssetURL assets.icons.blackCoverBook
+                          ]
+                      ]
+                  -- document link
+                  , HH.a
+                      [ HP.class_ $ ClassName "cursor-pointer flex items-center"
+                      , HP.href libInfo.home
+                      , HP.target "_blank"
+                      , HP.rel "noopener"
+                      ]
+                      [ HH.img
+                          [ HP.class_ $ ClassName " w-4 h-4"
+                          , HP.src $ fromAssetURL assets.icons.homeBlue
+                          ]
+                      ]
+                  ]
+
               ]
           ]
       , HH.div [ HP.class_ $ ClassName "mt-3" ]
@@ -50,41 +74,28 @@ make = Hooks.component \_ { libInfo } -> Hooks.do
       ]
   renderMetaInfo { libInfo } = do
     HH.div
-      [ HP.class_ $ ClassName "mt-5" ]
+      [ HP.class_ $ ClassName "mt-5 text-xs" ]
       [ HH.div [ HP.class_ $ ClassName "flex flex-wrap items-center" ]
           [
-            -- document link
-            HH.a
-              [ HP.class_ $ ClassName "cursor-pointer flex items-center"
-              , HP.href libInfo.docs
-              , HP.target "_blank"
-              , HP.rel "noopener"
-              ]
-              [ HH.img
-                  [ HP.class_ $ ClassName " w-4 h-4 mx-1 "
-                  , HP.src $ fromAssetURL assets.icons.blackCoverBook
-                  ]
-              ]
-          , spacer
-          -- license mark
-          , HH.div
+            -- license mark
+            HH.div
               [ HP.class_ $ ClassName "flex items-center" ]
               [ HH.img
-                  [ HP.class_ $ ClassName "w-4 h-4 mx-1 "
+                  [ HP.class_ $ ClassName "w-3 h-3 m-1 "
                   , HP.src $ fromAssetURL assets.icons.law
                   ]
-              , HH.span [ HP.class_ $ ClassName "text-sm font-josefin-sans font-bold text-red-900" ]
+              , HH.span [ HP.class_ $ ClassName "font-josefin-sans font-bold text-red-900" ]
                   [ HH.text libInfo.license ]
               ]
           , spacer
           , -- purescript compiler version
             HH.div [ HP.class_ $ ClassName "flex items-center" ]
               [ HH.img
-                  [ HP.class_ $ ClassName "w-4 h-4 mx-1"
+                  [ HP.class_ $ ClassName "w-3 h-3 m-1"
                   , HP.src $ fromAssetURL assets.icons.purescript
                   ]
               , HH.span
-                  [ HP.class_ $ ClassName "text-sm font-codeblock text-gray-500" ]
+                  [ HP.class_ $ ClassName "font-codeblock text-gray-500" ]
                   [ HH.text libInfo.pursVersion ]
               ]
           , spacer
@@ -93,10 +104,10 @@ make = Hooks.component \_ { libInfo } -> Hooks.do
               [ HP.class_ $ ClassName "cursor-pointer flex items-center"
               ]
               [ HH.img
-                  [ HP.class_ $ ClassName " w-4 h-4 mx-1 "
+                  [ HP.class_ $ ClassName " w-3 h-3 m-1 "
                   , HP.src $ fromAssetURL assets.icons.tagGreen
                   ]
-              , HH.span [ HP.class_ $ ClassName "font-codeblock text-sm text-green-700 " ]
+              , HH.span [ HP.class_ $ ClassName "font-codeblock text-green-700 " ]
                   [ HH.text case libInfo.status of
                       Unstable -> "beta"
                       Stable ver -> "stable " <> ver

@@ -14,4 +14,5 @@ make = Hooks.component \_ _ -> Hooks.do
   where
   render _ = do
     HH.div [ HP.class_ $ ClassName "flex items-center justify-center p-3" ]
-      [ HH.text "ことさんち" ]
+      [ HH.text "ことさんち"
+      ]

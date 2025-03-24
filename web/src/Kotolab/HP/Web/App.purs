@@ -13,6 +13,7 @@ import Halogen.Hooks as Hooks
 import Kotolab.HP.Web.Capabilities.MonadAjax (class MonadAjax)
 import Kotolab.HP.Web.Component.Footer as Footer
 import Kotolab.HP.Web.Component.Header as Header
+import Kotolab.HP.Web.Component.HeaderMenu as HeaderMenu
 import Kotolab.HP.Web.Component.SidebarMenu as SidebarMenu
 import Kotolab.HP.Web.Component.SidebarToggleButton as SidebarToggleButton
 import Kotolab.HP.Web.Component.Types (MenuItem)
@@ -66,11 +67,16 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
         HH.div [ HP.class_ $ ClassName "h-16 flex items-center justify-center bg-pink-200" ]
           [ HH.slot_ (Proxy :: _ "header") unit Header.make {}
           ]
+      -- ヘッダーメニュー(PC画面のみ)
+      , HH.div [ HP.class_ $ ClassName "hidden sm:block" ]
+          [ HH.slot_ (Proxy :: _ "header-menu") unit HeaderMenu.make
+              { menuItems }
+          ]
 
       -- メインビュー 
       , HH.div [ HP.class_ $ ClassName "flex-1 bg-pink-50 " ]
           [ HH.div
-              [ HP.class_ $ ClassName "w-full px-5 sm:w-2/3 sm:mx-auto" ]
+              [ HP.class_ $ ClassName "w-full px-5 sm:w-2/3 lg:w-1/2 sm:mx-auto" ]
               [ renderRouterView ctx
               ]
           ]

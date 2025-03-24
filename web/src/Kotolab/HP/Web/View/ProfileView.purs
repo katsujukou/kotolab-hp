@@ -38,11 +38,11 @@ make = Hooks.component \_ _ -> Hooks.do
           { label: "じこしょうかい"
           , sub: "Profile"
           }
-      , HH.div [ HP.class_ $ ClassName "flex flex-col sm:flex-row sm:w-full" ]
+      , HH.div [ HP.class_ $ ClassName "flex flex-wrap  sm:w-full" ]
           [ HH.div
               [ HP.class_ $ ClassName "w-80" ]
               [ HH.img
-                  [ HP.class_ $ ClassName "w-full h-full object-cover [clip-path:inset(10% round 20px)]"
+                  [ HP.class_ $ ClassName "w-full aspect-auto object-cover [clip-path:inset(10% round 20px)]"
                   , HP.src $ fromAssetURL assets.images.selfy
                   ]
               ]
@@ -76,7 +76,7 @@ make = Hooks.component \_ _ -> Hooks.do
               ]
 
           , HH.div
-              [ HP.class_ $ ClassName "grid sm:grid-cols-2 sm:gap-3" ]
+              [ HP.class_ $ ClassName "flex flex-wrap gap-3 items-center " ]
               [ renderActivity
                   "関数型プログラミング愛好家として"
                   [ HH.text "PureScriptをこよなく愛し、ブログの執筆やライブラリ作成などで日々布教活動中。"
