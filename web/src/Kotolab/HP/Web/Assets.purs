@@ -18,6 +18,7 @@ type Assets =
       , packageRibboned :: AssetURL
       , backToTop :: AssetURL
       , purescript :: AssetURL
+      , nix :: AssetURL
       }
   , images ::
       { selfy :: AssetURL

@@ -13,6 +13,7 @@ import iconHomeBlue from "@assets/icon/home-blue.svg";
 import iconTagGreen from "@assets/icon/tag-green.svg";
 import iconPackageRibboned from "@assets/icon/package-ribboned.svg";
 import iconBackToTop from "@assets/icon/back-to-top.svg";
+import iconNix from "@assets/icon/nix-logo.svg"
 
 export const assets = {
   icons: {
@@ -28,6 +29,7 @@ export const assets = {
     packageRibboned: iconPackageRibboned,
     backToTop: iconBackToTop,
     purescript: iconPureScript,
+    nix: iconNix,
   },
   images: {
     selfy: imageSelfy,

@@ -28,7 +28,7 @@ reducer s0 _ = s0
 
 initialState :: State
 initialState =
-  { mode: SmartPhone
+  { mode: PC
   }
 
 useAppStore :: forall m a. MonadEffect m => Eq a => UseHelixHook State Action a m
