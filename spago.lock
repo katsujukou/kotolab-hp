@@ -362,11 +362,19 @@
       "foreign-lib": {
         "path": "foreign-lib",
         "core": {
-          "dependencies": [],
-          "build_plan": []
+          "dependencies": [
+            "effect",
+            "prelude"
+          ],
+          "build_plan": [
+            "effect",
+            "prelude"
+          ]
         },
         "test": {
           "dependencies": [
+            "aff",
+            "assert",
             "spec",
             "spec-node"
           ],
@@ -377,6 +385,7 @@
             "argonaut-core",
             "arraybuffer-types",
             "arrays",
+            "assert",
             "avar",
             "bifunctors",
             "catenable-lists",

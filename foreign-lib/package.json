@@ -1,7 +1,10 @@
 {
   "type": "module",
   "scripts": {
-    "test": "cd .. && spago test -p foreign-lib"
+    "compile": "cd .. && spago build -p foreign-lib",
+    "check": "purs-tidy check ./src ./test",
+    "test": "cd .. && spago test -p foreign-lib",
+    "clean": "cd .. && rm -rf ./.spago ./output ./output-es ./api/dist"
   },
   "devDependencies": {
     "dayjs": "^1.11.13"

@@ -27,7 +27,7 @@ jobs:
 
       # Run CI jobs
       - name: Install
-        run: spago install -p ${{ matrix.target }} && pnpm -F './${{ matrix.target }}' install
+        run: spago install && pnpm -F './${{ matrix.target }}' install
 
       - name: Compile
         run: pnpm -F './${{ matrix.target}}' run compile

@@ -1,8 +1,11 @@
 package:
   name: foreign-lib
-  dependencies: []
+  dependencies:
+    - effect
+    - prelude
   test:
     main: Test.Foreign.Main
     dependencies:
+      - aff
       - spec
       - spec-node
