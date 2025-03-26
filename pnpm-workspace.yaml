@@ -3,3 +3,4 @@ packages:
   - "./api-schema"
   - "./web"
   - "./admin-web"
+  - "./foreign-lib"

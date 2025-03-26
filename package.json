@@ -1,0 +1,14 @@
+{
+  "name": "kotolab-hp",
+  "private": true,
+  "workspaces": [
+    "api",
+    "api-schema",
+    "foreign-lib",
+    "admin-web",
+    "web"
+  ],
+  "dependencies": {
+    "dayjs": "^1.11.13"
+  }
+}
