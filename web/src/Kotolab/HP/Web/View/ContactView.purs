@@ -13,8 +13,10 @@ import Halogen.HTML.Properties as HP
 import Halogen.Hooks as Hooks
 import Kotolab.HP.Web.Assets (AssetURL, assets, fromAssetURL)
 import Kotolab.HP.Web.Component.HTML.PageTitle (pageTitle)
+import Kotolab.HP.Web.Component.ToastPopUp as ToastPopUp
 import Kotolab.HP.Web.Hooks.UseApp (AppMode(..), useApp)
 import Promise.Aff (toAffE)
+import Type.Proxy (Proxy(..))
 import Web.Clipboard as CB
 import Web.HTML as HTML
 import Web.HTML.Location (setHref)
@@ -39,7 +41,7 @@ externalLinks =
   ]
 
 make :: forall q i o m. MonadAff m => H.Component q i o m
-make = Hooks.component \_ _ -> Hooks.do
+make = Hooks.component \{ slotToken } _ -> Hooks.do
   appApi <- useApp
   let
     handleEmailIconClick = do
@@ -55,6 +57,7 @@ make = Hooks.component \_ _ -> Hooks.do
             Nothing -> pure unit
             Just cb -> do
               liftAff $ toAffE $ CB.writeText email cb
+              Hooks.tell slotToken (Proxy :: _ "email-btn-toast") unit ToastPopUp.Display
 
     ctx =
       { handleEmailIconClick
@@ -70,13 +73,14 @@ make = Hooks.component \_ _ -> Hooks.do
 
       , HH.div [ HP.class_ $ ClassName "flex justify-center items-center m-1 gap-3" ] $ fold
           [ [ HH.button
-                [ HP.class_ $ ClassName "m-1 "
+                [ HP.class_ $ ClassName "m-1 relative cursor-pointer"
                 , HE.onClick \_ -> ctx.handleEmailIconClick
                 ]
                 [ HH.img
                     [ HP.class_ $ ClassName "h-8 w-8"
                     , HP.src $ fromAssetURL assets.icons.iconEmail
                     ]
+                , HH.slot_ (Proxy :: _ "email-btn-toast") unit ToastPopUp.make {}
                 ]
             ]
           , externalLinks <#> renderExternalLink ctx
@@ -110,6 +114,8 @@ make = Hooks.component \_ _ -> Hooks.do
     HH.a
       [ HP.class_ $ ClassName "h-8 w-8"
       , HP.href item.href
+      , HP.target "_blank"
+      , HP.rel "noopener"
       ]
       [ HH.img
           [ HP.class_ $ ClassName ""
