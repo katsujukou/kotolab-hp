@@ -2,14 +2,53 @@ module Kotolab.HP.Web.View.HomeView where
 
 import Prelude
 
+import Data.Codec.Argonaut as CA
+import Data.Either (either)
+import Effect.Class (class MonadEffect)
 import Halogen (ClassName(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Hooks as Hooks
+import Kotolab.HP.API.Schema.Json as Json
 import Kotolab.HP.Web.Component.HTML.PageTitle (pageTitle)
+import Kotolab.HP.Web.Component.HackbarAttendInfo as HackbarAttendInfo
+import Kotolab.HP.Web.Component.Types (HackbarAttendInfo, hackbarAttendInfo)
+import Type.Proxy (Proxy(..))
 
-make :: forall q i o m. H.Component q i o m
+attendList :: Array HackbarAttendInfo
+attendList = either (const []) identity $ Json.parse (CA.array hackbarAttendInfo)
+  """
+  [
+    {
+      "date": "2025-03-02",
+      "startTime": [18,0],
+      "endTime": [23,0]
+    },
+    {
+      "date": "2025-03-07",
+      "startTime": [19,30],
+      "endTime": [23,0]
+    },
+    {
+      "date": "2025-03-14",
+      "startTime": [19,30],
+      "endTime": [23,0]
+    },
+    {
+      "date": "2025-03-22",
+      "startTime": [18,0],
+      "endTime": [21,30]
+    },
+    {
+      "date": "2025-03-29",
+      "startTime": [19,30],
+      "endTime": [23,0]
+    }
+  ]
+  """
+
+make :: forall q i o m. MonadEffect m => H.Component q i o m
 make = Hooks.component \_ _ -> Hooks.do
   Hooks.pure (render {})
   where
@@ -26,13 +65,17 @@ make = Hooks.component \_ _ -> Hooks.do
       , HH.div [ HP.class_ $ ClassName "m-4 flex flex-col items-center" ]
           [ HH.h3 [ HP.class_ $ ClassName "font-yomogi text-lg text-pink-700 m-4" ]
               [ HH.text "─ インフォメーション ─ " ]
-          , HH.div [ HP.class_ $ ClassName "text-gray-700" ]
+          , HH.div [ HP.class_ $ ClassName "text-gray-700 mb-4" ]
               [ HH.text " 現在、 新しいお知らせはありません。" ]
+          ]
+      , HH.div [ HP.class_ $ ClassName "my-4 " ]
+          [ HH.slot_ (Proxy :: _ "hackbar-attend-info") unit HackbarAttendInfo.make
+              { attendList }
           ]
       , HH.div [ HP.class_ $ ClassName "flex flex-col items-center" ]
           [ HH.h2 [ HP.class_ $ ClassName "font-yomogi text-lg text-pink-700 m-4" ]
               [ HH.text "─ すぺしゃる さんくす ─ " ]
-          , HH.p [ HP.class_ $ ClassName "w-1/2 font-josefin-sans text-sm text-gray-500" ]
+          , HH.p [ HP.class_ $ ClassName "sm:w-1/2 w-[80%] font-josefin-sans text-sm text-gray-500" ]
               [ HH.text "このWebサイトは、"
               , HH.a
                   [ HP.class_ $ ClassName "text-indigo-500 hover:underline"

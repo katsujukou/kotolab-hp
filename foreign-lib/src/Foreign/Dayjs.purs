@@ -1,6 +1,7 @@
 module Foreign.Dayjs
   ( DayOfWeek(..)
   , Dayjs
+  , codec
   , date
   , day
   , format
@@ -12,10 +13,14 @@ module Foreign.Dayjs
 
 import Prelude
 
+import Data.Codec.Argonaut (JsonCodec, prismaticCodec)
+import Data.Codec.Argonaut as C
 import Data.Date (Day, Month, Year)
 import Data.Enum (class BoundedEnum, class Enum, Cardinality(..), toEnum)
 import Data.Function.Uncurried (Fn2, Fn3, runFn2, runFn3)
+import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
+import Data.Show.Generic (genericShow)
 import Effect (Effect)
 
 foreign import data Dayjs :: Type
@@ -38,6 +43,10 @@ data DayOfWeek = Sun | Mon | Tue | Wed | Thu | Fri | Sat
 
 derive instance Eq DayOfWeek
 derive instance Ord DayOfWeek
+
+derive instance Generic DayOfWeek _
+instance Show DayOfWeek where
+  show = genericShow
 
 succDayOfWeek :: DayOfWeek -> Maybe DayOfWeek
 succDayOfWeek = case _ of
@@ -116,3 +125,5 @@ foreign import formatImpl :: Fn2 String Dayjs String
 format :: String -> Dayjs -> String
 format = runFn2 formatImpl
 
+codec :: JsonCodec Dayjs
+codec = prismaticCodec "Dayjs" parse show C.string

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: [api-schema, api, web, foreign-lib, admin-web]
+        target: [api-schema, backend, web, foreign-lib, admin-web]
     steps:
       # Setup Nix envirionment
       - uses: actions/checkout@v3

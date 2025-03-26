@@ -23,11 +23,11 @@ export const parseImpl = (Nothing, Just, str) => {
 
 /**
  * 
- * @param {Dayjs.Dayjs} d 
  * @param {string} f 
+ * @param {Dayjs.Dayjs} d 
  * @returns 
  */
-export const formatImpl = (d, f) => d.format(f);
+export const formatImpl = (f, d) => d.format(f);
 
 export const showImpl = (d) => `${d}`;
 

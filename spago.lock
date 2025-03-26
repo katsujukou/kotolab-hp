@@ -107,8 +107,77 @@
           "build_plan": []
         }
       },
-      "api": {
-        "path": "api",
+      "api-schema": {
+        "path": "api-schema",
+        "core": {
+          "dependencies": [
+            "codec-argonaut",
+            "prelude",
+            "routing-duplex"
+          ],
+          "build_plan": [
+            "argonaut-core",
+            "arrays",
+            "assert",
+            "bifunctors",
+            "codec",
+            "codec-argonaut",
+            "console",
+            "const",
+            "contravariant",
+            "control",
+            "distributive",
+            "effect",
+            "either",
+            "enums",
+            "exceptions",
+            "exists",
+            "foldable-traversable",
+            "foreign-object",
+            "functions",
+            "functors",
+            "gen",
+            "identity",
+            "integers",
+            "invariant",
+            "js-uri",
+            "lazy",
+            "lcg",
+            "lists",
+            "maybe",
+            "newtype",
+            "nonempty",
+            "numbers",
+            "ordered-collections",
+            "orders",
+            "partial",
+            "prelude",
+            "profunctor",
+            "quickcheck",
+            "random",
+            "record",
+            "refs",
+            "routing-duplex",
+            "safe-coerce",
+            "st",
+            "strings",
+            "tailrec",
+            "transformers",
+            "tuples",
+            "type-equality",
+            "typelevel-prelude",
+            "unfoldable",
+            "unsafe-coerce",
+            "variant"
+          ]
+        },
+        "test": {
+          "dependencies": [],
+          "build_plan": []
+        }
+      },
+      "backend": {
+        "path": "backend",
         "core": {
           "dependencies": [
             "aff",
@@ -290,75 +359,6 @@
           ]
         }
       },
-      "api-schema": {
-        "path": "api-schema",
-        "core": {
-          "dependencies": [
-            "codec-argonaut",
-            "prelude",
-            "routing-duplex"
-          ],
-          "build_plan": [
-            "argonaut-core",
-            "arrays",
-            "assert",
-            "bifunctors",
-            "codec",
-            "codec-argonaut",
-            "console",
-            "const",
-            "contravariant",
-            "control",
-            "distributive",
-            "effect",
-            "either",
-            "enums",
-            "exceptions",
-            "exists",
-            "foldable-traversable",
-            "foreign-object",
-            "functions",
-            "functors",
-            "gen",
-            "identity",
-            "integers",
-            "invariant",
-            "js-uri",
-            "lazy",
-            "lcg",
-            "lists",
-            "maybe",
-            "newtype",
-            "nonempty",
-            "numbers",
-            "ordered-collections",
-            "orders",
-            "partial",
-            "prelude",
-            "profunctor",
-            "quickcheck",
-            "random",
-            "record",
-            "refs",
-            "routing-duplex",
-            "safe-coerce",
-            "st",
-            "strings",
-            "tailrec",
-            "transformers",
-            "tuples",
-            "type-equality",
-            "typelevel-prelude",
-            "unfoldable",
-            "unsafe-coerce",
-            "variant"
-          ]
-        },
-        "test": {
-          "dependencies": [],
-          "build_plan": []
-        }
-      },
       "foreign-lib": {
         "path": "foreign-lib",
         "core": {
@@ -374,7 +374,6 @@
         "test": {
           "dependencies": [
             "aff",
-            "assert",
             "spec",
             "spec-node"
           ],
@@ -385,7 +384,6 @@
             "argonaut-core",
             "arraybuffer-types",
             "arrays",
-            "assert",
             "avar",
             "bifunctors",
             "catenable-lists",

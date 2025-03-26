@@ -24,6 +24,7 @@ type Assets =
       { selfy :: AssetURL
       , frameLeft :: AssetURL
       , roseFrame :: AssetURL
+      , roseFrameAngle :: AssetURL
       }
   }
 
