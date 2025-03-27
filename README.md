@@ -1,4 +1,4 @@
-# []("./web/assets/favicon.ico")ことさんち
+# ![](./web/assets/favicon.ico)ことさんち
 
 [こと](https://x.com/kotolabdev)のホームページ
 
