@@ -13,8 +13,6 @@ data Route
   | Works
   | Contact
 
--- | Links
-
 derive instance Eq Route
 derive instance Generic Route _
 
@@ -24,5 +22,4 @@ route = root $ sum
   , "Profile": "profile" / noArgs
   , "Works": "work" / noArgs
   , "Contact": "contact" / noArgs
-  -- , "Links": "links" / noArgs
   }

@@ -18,12 +18,14 @@ import Unsafe.Coerce (unsafeCoerce)
 type State =
   { rawPath :: String
   , currentRoute :: Maybe Route
+  , initialized :: Boolean
   }
 
-data Action = SetRoute { rawPath :: String, route :: Maybe Route }
+data Action = Initialized | SetRoute { rawPath :: String, route :: Maybe Route }
 
 reducer :: State -> Action -> State
 reducer s0 = case _ of
+  Initialized -> s0 { initialized = true }
   SetRoute { rawPath, route } -> s0 { rawPath = rawPath, currentRoute = route }
 
 middlewareStack :: forall m. MonadEffect m => HelixMiddleware State Action m
@@ -31,14 +33,18 @@ middlewareStack _ act next = do
   case act of
     SetRoute { rawPath } -> do
       liftEffect do
-        { pushState } <- PushState.makeInterface
-        pushState (unsafeCoerce {}) rawPath
+        { pushState, locationState } <- PushState.makeInterface
+        loc <- locationState
+        when (loc.pathname /= rawPath) do
+          pushState (unsafeCoerce {}) rawPath
       next act
+    _ -> next act
 
 initialState :: State
 initialState =
   { rawPath: ""
   , currentRoute: Just Home
+  , initialized: false
   }
 
 useNavigateStore :: forall m a. MonadEffect m => Eq a => UseHelixHook State Action a m
@@ -63,29 +69,36 @@ useNavigate = Hooks.wrap hook
   hook = Hooks.do
     { currentRoute } /\ storeApi <- useNavigateStore identity
 
-    useLifecycleEffect do
-      let
-        updateRoute :: PushState.LocationState -> Hooks.HookM m Unit
-        updateRoute lc = do
-          storeApi.dispatch $
-            SetRoute
-              { rawPath: lc.path
-              , route: hush $ RD.parse route lc.path
-              }
+    useLifecycleEffect $ do
+      initialized <- storeApi.getState <#> _.initialized
+      if initialized then pure Nothing
+      else do
+        let
+          updateRoute :: PushState.LocationState -> Hooks.HookM m Unit
+          updateRoute lc = do
+            storeApi.dispatch $
+              SetRoute
+                { rawPath: lc.path
+                , route: hush $ RD.parse route lc.path
+                }
 
-      inst <- liftEffect PushState.makeInterface
+        inst <- liftEffect PushState.makeInterface
 
-      { unlistenLoc, emitter } <- liftEffect do
-        { emitter, listener } <- HS.create
-        unlistenLoc <- inst.listen (HS.notify listener)
-        pure { unlistenLoc, emitter: emitter <#> updateRoute }
+        { unlistenLoc, emitter } <- liftEffect do
+          { emitter, listener } <- HS.create
+          unlistenLoc <- inst.listen (HS.notify listener)
+          pure { unlistenLoc, emitter: emitter <#> updateRoute }
 
-      -- 初期化直後のパス情報をStore反映させる
-      liftEffect inst.locationState >>= updateRoute
+        -- 初期化直後のパス情報をStore反映させる
+        liftEffect inst.locationState >>= updateRoute
 
-      subscriptionId <- Hooks.subscribe emitter
+        subscriptionId <- Hooks.subscribe emitter
 
-      pure $ Just (liftEffect unlistenLoc *> Hooks.unsubscribe subscriptionId)
+        storeApi.dispatch Initialized
+
+        pure $ Just do
+          liftEffect unlistenLoc
+          Hooks.unsubscribe subscriptionId
 
     let
       navigateTo :: Route -> Hooks.HookM m Unit

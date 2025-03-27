@@ -5,13 +5,16 @@ import Prelude
 import Data.Int as Int
 import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
+import Effect.Aff (Milliseconds(..))
+import Effect.Aff as Aff
 import Fmt as Fmt
-import Halogen (ClassName(..), liftEffect)
+import Halogen (ClassName(..), liftAff, liftEffect)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Halogen.Hooks (captures, useState, useTickEffect)
+import Halogen.Hooks (captures, subscribe, unsubscribe, useLifecycleEffect, useState, useTickEffect)
 import Halogen.Hooks as Hooks
+import Halogen.Query.Event (eventListener)
 import Kotolab.HP.Web.Capabilities.MonadAjax (class MonadAjax)
 import Kotolab.HP.Web.Component.Footer as Footer
 import Kotolab.HP.Web.Component.Header as Header
@@ -32,7 +35,10 @@ import Unsafe.Coerce (unsafeCoerce)
 import Web.CSSOMView (ScrollBehavior(..))
 import Web.CSSOMView.Element (scrollTo)
 import Web.DOM.Element as Element
+import Web.Event.Event (EventType(..))
+import Web.HTML as HTML
 import Web.HTML as Window
+import Web.HTML.Window (toEventTarget)
 
 menuItems :: Array MenuItem
 menuItems =
@@ -49,12 +55,27 @@ _mainView = H.RefLabel "main-view"
 make :: forall q i o m. MonadAjax m => H.Component q i o m
 make = Hooks.component \{ slotToken } _ -> Hooks.do
   navigatorApi <- useNavigate
+  _ /\ cntId <- useState 0
+
   dispayToggleBtn /\ dispayToggleBtnId <- useState true
   { height } <- useHeight
   shouldDisplayTopButton /\ shouldDisplayTopButtonId <- useState false
 
   _ <- useMainViewHeight { shouldDisplayTopButtonId } { currentRoute: navigatorApi.currentRoute, height }
 
+  useLifecycleEffect do
+    window <- liftEffect HTML.window
+    let
+      handler _ = Just do
+        -- 強制的にリレンダリング
+        Hooks.modify_ cntId (_ + 1)
+
+    subscriptionId <- subscribe $
+      eventListener
+        (EventType "popstate")
+        (toEventTarget window)
+        handler
+    pure $ Just (unsubscribe subscriptionId)
   let
     handleSidebarToggleBtn = case _ of
       SidebarToggleButton.Clicked -> do
@@ -65,6 +86,10 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
     handleSidebarMenu = case _ of
       SidebarMenu.CloseClicked -> do
         Hooks.put dispayToggleBtnId true
+      SidebarMenu.MenuItemClicked route -> do
+        Hooks.put dispayToggleBtnId true
+        liftAff $ Aff.delay (Milliseconds 200.0)
+        navigatorApi.navigateTo route
 
     handleBackToTopClick = case _ of
       PageTopButton.Clicked -> do
@@ -140,7 +165,7 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
       , HH.div
           [ HP.class_ $ ClassName "block sm:hidden" ]
           [ HH.slot (Proxy :: _ "sidebar-menu") unit SidebarMenu.make
-              { value: false
+              { value: false -- not ctx.dispayToggleBtn
               , menuItems
               }
               ctx.handleSidebarMenu
@@ -157,4 +182,3 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
       Profile -> HH.slot_ (Proxy :: _ "profile-view") unit ProfileView.make {}
       Works -> HH.slot_ (Proxy :: _ "workw-view") unit WorksView.make {}
       Contact -> HH.slot_ (Proxy :: _ "contact-view") unit ContactView.make {}
--- Links -> HH.slot_ (Proxy :: _ "links-view") unit LinksView.make {}

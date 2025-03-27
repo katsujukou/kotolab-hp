@@ -5,17 +5,19 @@ import Prelude
 import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
 import Effect.Class (class MonadEffect)
+import Effect.Class.Console as Console
 import Fmt as Fmt
 import Halogen (ClassName(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
-import Halogen.Hooks (useQuery, useState)
+import Halogen.Hooks (captures, useQuery, useState, useTickEffect)
 import Halogen.Hooks as Hooks
 import Kotolab.HP.Web.Assets (assets, fromAssetURL)
 import Kotolab.HP.Web.Component.Types (MenuItem)
 import Kotolab.HP.Web.Hooks.UseNavigate (useNavigate)
+import Kotolab.HP.Web.Routes (Route)
 
 type Input =
   { value :: Boolean
@@ -24,17 +26,21 @@ type Input =
 
 data Query a = Toggle a
 
-data Output = CloseClicked
+data Output = CloseClicked | MenuItemClicked Route
 
 make :: forall m. MonadEffect m => H.Component Query Input Output m
-make = Hooks.component \{ queryToken, outputToken } inps -> Hooks.do
-  -- appApi <- useApp
-  { currentRoute, navigateTo } <- useNavigate
+make = Hooks.component \{ queryToken, outputToken } inps@{ value } -> Hooks.do
+  { currentRoute } <- useNavigate
   display /\ displayId <- useState inps.value
+
+  captures { value } useTickEffect do
+    Hooks.put displayId value
+    pure Nothing
 
   useQuery queryToken
     case _ of
       Toggle next -> do
+        Console.log "Toggle!"
         Hooks.modify_ displayId not
         pure $ Just next
 
@@ -43,16 +49,16 @@ make = Hooks.component \{ queryToken, outputToken } inps -> Hooks.do
       Hooks.put displayId false
       Hooks.raise outputToken CloseClicked
 
-    handleNavigate to = do
-      navigateTo to
-      handleCloseBtn
+    handleMenuItemClick to = do
+      Hooks.put displayId false
+      Hooks.raise outputToken $ MenuItemClicked to
 
     ctx =
       { display
       , handleCloseBtn
       , currentRoute: currentRoute
       , menuItems: inps.menuItems
-      , handleNavigate
+      , handleMenuItemClick
       }
 
   Hooks.pure $ render ctx
@@ -103,6 +109,6 @@ make = Hooks.component \{ queryToken, outputToken } inps -> Hooks.do
           }
     HH.div
       [ HP.class_ $ ClassName cls
-      , HE.onClick \_ -> ctx.handleNavigate menuItem.route
+      , HE.onClick \_ -> ctx.handleMenuItemClick menuItem.route
       ]
       [ HH.text menuItem.label ]

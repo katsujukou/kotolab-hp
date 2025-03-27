@@ -5,6 +5,7 @@ package:
     - affjax-web
     - api-schema
     - console
+    - debug
     - effect
     - fmt
     - foreign-lib
