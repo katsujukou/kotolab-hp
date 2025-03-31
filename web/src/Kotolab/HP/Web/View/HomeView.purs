@@ -5,6 +5,8 @@ import Prelude
 import Data.Codec.Argonaut as CA
 import Data.Either (either)
 import Effect.Class (class MonadEffect)
+import Effect.Console (log)
+import Effect.Unsafe (unsafePerformEffect)
 import Halogen (ClassName(..))
 import Halogen as H
 import Halogen.HTML as HH
@@ -17,7 +19,7 @@ import Kotolab.HP.Web.Component.Types (HackbarAttendInfo, hackbarAttendInfo)
 import Type.Proxy (Proxy(..))
 
 attendList :: Array HackbarAttendInfo
-attendList = either (const []) identity $ Json.parse (CA.array hackbarAttendInfo)
+attendList = either (log >>> unsafePerformEffect >>> const []) identity $ Json.parse (CA.array hackbarAttendInfo)
   """
   [
     {
@@ -38,7 +40,7 @@ attendList = either (const []) identity $ Json.parse (CA.array hackbarAttendInfo
     {
       "date": "2025-04-30",
       "startTime": [18,0],
-      "endTime": [23,00]
+      "endTime": [23,0]
     }
   ]
   """
