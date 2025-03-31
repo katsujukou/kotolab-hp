@@ -21,29 +21,24 @@ attendList = either (const []) identity $ Json.parse (CA.array hackbarAttendInfo
   """
   [
     {
-      "date": "2025-03-02",
+      "date": "2025-04-05",
       "startTime": [18,0],
       "endTime": [23,0]
     },
     {
-      "date": "2025-03-07",
+      "date": "2025-04-18",
       "startTime": [19,30],
       "endTime": [23,0]
     },
     {
-      "date": "2025-03-14",
+      "date": "2025-04-25",
       "startTime": [19,30],
       "endTime": [23,0]
     },
     {
-      "date": "2025-03-22",
+      "date": "2025-04-30",
       "startTime": [18,0],
-      "endTime": [21,30]
-    },
-    {
-      "date": "2025-03-29",
-      "startTime": [19,30],
-      "endTime": [23,0]
+      "endTime": [23,00]
     }
   ]
   """

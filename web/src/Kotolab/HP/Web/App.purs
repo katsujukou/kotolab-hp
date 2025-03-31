@@ -135,7 +135,10 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
 
       -- メインビュー 
       , HH.div
-          [ HP.class_ $ ClassName "flex-1 bg-pink-50 relative scroll-smooth pb-32"
+          [ HP.class_ $ ClassName $
+              Fmt.fmt
+                @"flex-1 bg-pink-50 relative scroll-smooth {pb}"
+                { pb: if ctx.shouldDisplayTopButton then "pb-32" else "" }
           , HP.ref _mainView
           ]
           [ HH.div
