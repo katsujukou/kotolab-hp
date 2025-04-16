@@ -5,6 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 
 [env.main]
 routes = [{ pattern = "api.kotolab.net/*", zone_name = "kotolab.net" }]
+observability.logs.enabled = true
 
 [env.main.vars]
 BASE_URL = "/"
@@ -15,7 +16,7 @@ LOG_LEVEL_MIN = "INFO"
 LOG_NO_COLOR = false
 
 [[env.main.kv_namespaces]]
-binding = "hackbar_attend_list_prod"
+binding = "hackbar_attend_list"
 id = "cb4f37641dda472bae93f043f957e8cd"
 preview_id = "184070c3bf5941faad0e3623c1e0b6d4"
 
@@ -31,6 +32,6 @@ LOG_LEVEL_MIN = "Debug"
 LOG_NO_COLOR = false
 
 [[env.develop.kv_namespaces]]
-binding = "hackbar_attend_list_dev"
+binding = "hackbar_attend_list"
 id = "184070c3bf5941faad0e3623c1e0b6d4"
 preview_id = "184070c3bf5941faad0e3623c1e0b6d4"

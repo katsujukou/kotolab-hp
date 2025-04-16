@@ -14,5 +14,5 @@ type Env =
   , "LOG_NO_COLOR" :: String
   , "LOG_LEVEL_MIN" :: String
   , "DB" :: D1Database
-  , hackbar_attend_list_dev :: KVNamespace
+  , hackbar_attend_list :: KVNamespace
   }

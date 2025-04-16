@@ -85,7 +85,7 @@ fetch = mkFetch { route: Schema.resourcePaths, router: runApp (middlewareStack r
     -> Aff (Either ErrorType a)
   runEffects cfEnv m = m
     # Env.interpret (Env.cloudflareBindingHandler cfEnv)
-    # Hackbar.interpret (Hackbar.cloudflareKVHandler cfEnv.hackbar_attend_list_dev)
+    # Hackbar.interpret (Hackbar.cloudflareKVHandler cfEnv.hackbar_attend_list)
     -- # DB.interpret (DB.cloudflareD1Handler cfEnv."DB")
     # Log.interpret (Log.terminalHandler { minLevel, color: true })
     # runExcept
