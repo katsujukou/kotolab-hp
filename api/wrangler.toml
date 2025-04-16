@@ -1,6 +1,0 @@
-name = "api"
-main = "src/index.js"
-compatibility_date = "2024-12-24"
-compatibility_flags = ["nodejs_compat"]
-# account_id = "000000000000"
-# route = "example.com/*" ## Workerアクセスドメイン

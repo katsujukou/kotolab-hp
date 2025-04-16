@@ -1,3 +1,11 @@
+export const newImpl = (init) => {
+  return new Headers(init);
+}
+
+/** @param {Headers} headers */
+export const appendImpl = (name, value, headers) => {
+  return headers.append(name, value)
+}
 /**
  * @param {Headers} headers
  */

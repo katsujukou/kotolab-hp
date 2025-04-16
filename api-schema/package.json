@@ -2,6 +2,7 @@
   "type": "module",
   "scripts": {
     "compile": "cd .. && spago build -p api-schema",
-    "check": "purs-tidy check ./src ./check"
+    "check": "purs-tidy check ./src ./check",
+    "test": "cd .. && spago test -p api-schema"
   }
 }

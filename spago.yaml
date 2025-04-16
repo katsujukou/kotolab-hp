@@ -1,6 +1,6 @@
 workspace:
   packageSet:
-    registry: 63.5.0
+    registry: 64.1.1
   extraPackages:
     web-cssom-view:
       git: https://github.com/purescript-web/purescript-web-cssom-view

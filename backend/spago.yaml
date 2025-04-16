@@ -1,15 +1,17 @@
 package:
-  name: api
+  name: backend
   dependencies:
     - aff
     - api-schema
     - codec-argonaut
+    - dodo-printer
     - effect
     - fmt
     - httpurple
     - js-promise-aff
     - prelude
     - routing-duplex
+    - run
   test:
     main: Test.Kotolab.HP.API
     dependencies:

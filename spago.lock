@@ -40,6 +40,7 @@
             "fmt",
             "foldable-traversable",
             "foreign",
+            "foreign-lib",
             "foreign-object",
             "fork",
             "free",
@@ -51,7 +52,9 @@
             "halogen-helix",
             "halogen-hooks",
             "halogen-subscriptions",
+            "halogen-use-trigger-hooks",
             "halogen-vdom",
+            "http-methods",
             "identity",
             "integers",
             "invariant",
@@ -112,6 +115,8 @@
         "core": {
           "dependencies": [
             "codec-argonaut",
+            "foreign-lib",
+            "http-methods",
             "prelude",
             "routing-duplex"
           ],
@@ -133,10 +138,12 @@
             "exceptions",
             "exists",
             "foldable-traversable",
+            "foreign-lib",
             "foreign-object",
             "functions",
             "functors",
             "gen",
+            "http-methods",
             "identity",
             "integers",
             "invariant",
@@ -183,21 +190,25 @@
             "aff",
             "api-schema",
             "codec-argonaut",
+            "dodo-printer",
             "effect",
             "fmt",
             "httpurple",
             "js-promise-aff",
             "prelude",
-            "routing-duplex"
+            "routing-duplex",
+            "run"
           ],
           "build_plan": [
             "aff",
+            "ansi",
             "api-schema",
             "argonaut-core",
             "arraybuffer-types",
             "arrays",
             "assert",
             "bifunctors",
+            "catenable-lists",
             "codec",
             "codec-argonaut",
             "console",
@@ -207,6 +218,7 @@
             "datetime",
             "debug",
             "distributive",
+            "dodo-printer",
             "effect",
             "either",
             "enums",
@@ -215,11 +227,14 @@
             "fmt",
             "foldable-traversable",
             "foreign",
+            "foreign-lib",
             "foreign-object",
+            "free",
             "functions",
             "functors",
             "gen",
             "heterogeneous",
+            "http-methods",
             "httpurple",
             "identity",
             "integers",
@@ -264,6 +279,7 @@
             "record-studio",
             "refs",
             "routing-duplex",
+            "run",
             "safe-coerce",
             "st",
             "strings",
@@ -516,6 +532,7 @@
             "halogen-helix",
             "halogen-hooks",
             "halogen-subscriptions",
+            "halogen-use-trigger-hooks",
             "halogen-vdom",
             "http-methods",
             "identity",
@@ -659,7 +676,7 @@
     },
     "package_set": {
       "address": {
-        "registry": "63.5.0"
+        "registry": "64.1.1"
       },
       "compiler": ">=0.15.15 <0.16.0",
       "content": {
@@ -699,7 +716,8 @@
         "b64": "0.0.8",
         "barbies": "1.0.1",
         "barlow-lens": "0.9.0",
-        "bifunctors": "6.0.0",
+        "benchlib": "0.0.4",
+        "bifunctors": "6.1.0",
         "bigints": "7.0.1",
         "bolson": "0.3.9",
         "bookhound": "0.1.7",
@@ -818,6 +836,7 @@
         "generic-router": "0.0.1",
         "geojson": "0.0.5",
         "geometria": "2.2.0",
+        "gesso": "1.0.0",
         "gojs": "0.1.1",
         "grain": "3.0.0",
         "grain-router": "3.0.0",
@@ -828,9 +847,10 @@
         "halogen-bootstrap5": "5.3.2",
         "halogen-canvas": "1.0.0",
         "halogen-css": "10.0.0",
+        "halogen-declarative-canvas": "0.0.8",
         "halogen-echarts-simple": "0.0.4",
         "halogen-formless": "4.0.3",
-        "halogen-helix": "1.0.1",
+        "halogen-helix": "1.1.0",
         "halogen-hooks": "0.6.3",
         "halogen-hooks-extra": "0.9.0",
         "halogen-infinite-scroll": "1.1.0",
@@ -839,6 +859,7 @@
         "halogen-subscriptions": "2.0.0",
         "halogen-svg-elems": "8.0.0",
         "halogen-typewriter": "1.0.4",
+        "halogen-use-trigger-hooks": "1.0.0",
         "halogen-vdom": "8.0.0",
         "halogen-vdom-string-renderer": "0.5.0",
         "halogen-xterm": "2.0.0",
@@ -1037,6 +1058,7 @@
         "refs": "6.0.0",
         "remotedata": "5.0.1",
         "repr": "0.5.0",
+        "resize-arrays": "0.0.1",
         "resize-observer": "1.0.0",
         "resource": "2.0.1",
         "resourcet": "1.0.0",
@@ -1345,8 +1367,8 @@
     },
     "bifunctors": {
       "type": "registry",
-      "version": "6.0.0",
-      "integrity": "sha256-/gZwC9YhNxZNQpnHa5BIYerCGM2jeX9ukZiEvYxm5Nw=",
+      "version": "6.1.0",
+      "integrity": "sha256-6enQzl1vqnFTQZ1WX9BnoOOVdPGO9WZvVXldHckVQvY=",
       "dependencies": [
         "const",
         "either",
@@ -1473,6 +1495,25 @@
         "prelude",
         "tuples",
         "type-equality"
+      ]
+    },
+    "dodo-printer": {
+      "type": "registry",
+      "version": "2.2.3",
+      "integrity": "sha256-+XQtWgt+ybwvQb+QbJ60wm4/hxGRAQoSmeR+Se+ZT7I=",
+      "dependencies": [
+        "ansi",
+        "either",
+        "foldable-traversable",
+        "integers",
+        "lists",
+        "maybe",
+        "newtype",
+        "partial",
+        "prelude",
+        "safe-coerce",
+        "strings",
+        "tuples"
       ]
     },
     "dom-indexed": {
@@ -1748,12 +1789,13 @@
     },
     "halogen-helix": {
       "type": "registry",
-      "version": "1.0.1",
-      "integrity": "sha256-lOGYx74FbDgS/4VZL+BZeQV/PLA0DoQzLGpHNxkwPW0=",
+      "version": "1.1.0",
+      "integrity": "sha256-O3HdVRiV+vvSSR69Cvk9Mneh7E1DLnFVz4Z0MYT9Ii4=",
       "dependencies": [
         "effect",
         "halogen-hooks",
         "halogen-subscriptions",
+        "halogen-use-trigger-hooks",
         "lazy",
         "maybe",
         "prelude",
@@ -1805,6 +1847,21 @@
         "refs",
         "safe-coerce",
         "unsafe-reference"
+      ]
+    },
+    "halogen-use-trigger-hooks": {
+      "type": "registry",
+      "version": "1.0.0",
+      "integrity": "sha256-+SD8DguH2XEEiBhBtfk65djIsh7OJHgZuyqFa30SKek=",
+      "dependencies": [
+        "arrays",
+        "effect",
+        "foldable-traversable",
+        "halogen-hooks",
+        "maybe",
+        "prelude",
+        "refs",
+        "tuples"
       ]
     },
     "halogen-vdom": {
@@ -2579,6 +2636,27 @@
         "record",
         "strings",
         "tuples"
+      ]
+    },
+    "run": {
+      "type": "registry",
+      "version": "5.0.0",
+      "integrity": "sha256-uCCGBqPXOSTnQoVzQUoCcEYyGvi+dWZp+lLsxtNG6+U=",
+      "dependencies": [
+        "aff",
+        "effect",
+        "either",
+        "free",
+        "maybe",
+        "newtype",
+        "prelude",
+        "profunctor",
+        "tailrec",
+        "tuples",
+        "type-equality",
+        "typelevel-prelude",
+        "unsafe-coerce",
+        "variant"
       ]
     },
     "safe-coerce": {

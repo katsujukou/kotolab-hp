@@ -2,25 +2,41 @@ module Kotolab.HP.API.Schema where
 
 import Prelude hiding ((/))
 
+import Data.Date (Month, Year)
 import Data.Generic.Rep (class Generic)
-import Data.Maybe (Maybe)
 import Data.Show.Generic (genericShow)
-import Routing.Duplex (RouteDuplex', optional, root, string)
-import Routing.Duplex.Generic (noArgs, sum)
-import Routing.Duplex.Generic.Syntax ((/), (?))
+import Routing.Duplex (RouteDuplex', int, root, segment)
+import Routing.Duplex.Generic (sum)
+import Routing.Duplex.Generic.Syntax ((/))
 
-data Route
-  = Hello { name :: Maybe String }
-  | HackbarAttend
+data Resource = HackbarAttend Int Int -- year and month
 
-derive instance Eq Route
-derive instance Ord Route
-derive instance Generic Route _
-instance Show Route where
+derive instance Generic Resource _
+derive instance Eq Resource
+instance Show Resource where
   show = genericShow
 
-route :: RouteDuplex' Route
-route = root $ sum
-  { "Hello": "hello" ? { name: optional <<< string }
-  , "HackbarAttend": "hackbar-attend" / noArgs
+resourcePaths :: RouteDuplex' Resource
+resourcePaths = root $ sum
+  { "HackbarAttend": "hackbar-attend" / int segment / int segment
   }
+
+data Endpoint = Public PublicEndpoint
+
+-- | AdminGuarded AdminApiEndpoint
+
+derive instance Eq Endpoint
+derive instance Generic Endpoint _
+instance Show Endpoint where
+  show = genericShow
+
+data PublicEndpoint = ListHackbarAttendInfo Year Month
+
+derive instance Eq PublicEndpoint
+derive instance Generic PublicEndpoint _
+instance Show PublicEndpoint where
+  show = genericShow
+
+listHackbarAttendInfo :: Year -> Month -> Endpoint
+listHackbarAttendInfo y m = Public $ ListHackbarAttendInfo y m
+

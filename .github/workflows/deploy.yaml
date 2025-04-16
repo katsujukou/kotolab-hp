@@ -43,3 +43,12 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: ${{ github.workspace}}/${{ matrix.target }}
           command: pages deploy ./dist --project-name=kotolab-hp-${{ matrix.target }}
+
+      - name: Deploy Workers
+        if: matrix.target == 'backend'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ${{ github.workspace}}/${{ matrix.target }}
+          command: deploy ./dist --name=kotolab-hp-api

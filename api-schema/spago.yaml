@@ -2,5 +2,7 @@ package:
   name: api-schema
   dependencies:
     - codec-argonaut
+    - foreign-lib
+    - http-methods
     - prelude
     - routing-duplex

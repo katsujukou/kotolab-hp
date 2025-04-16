@@ -1,0 +1,87 @@
+module Kotolab.HP.API.Middlewares.Authenticator where
+
+-- import Prelude
+
+-- import Data.Array.NonEmpty as NonEmptyArray
+-- import Data.Either (Either(..))
+-- import Data.Maybe (Maybe(..))
+-- import Data.String.Regex (match)
+-- import Data.String.Regex.Flags (unicode)
+-- import Data.String.Regex.Unsafe (unsafeRegex)
+-- import Effect.Exception as Exn
+-- import Fmt as Fmt
+-- import HTTPurple (internalServerError, unauthorized, (!!))
+-- import HTTPurple as HTTPurple
+-- import Kotolab.HP.API.Effects.Auth (AUTH)
+-- import Kotolab.HP.API.Effects.Auth as Auth
+-- import Kotolab.HP.API.Effects.Db (DB)
+-- import Kotolab.HP.API.Effects.Db as DB
+-- import Kotolab.HP.API.Effects.GitHub (GITHUB)
+-- import Kotolab.HP.API.Effects.Log (LOG, LogLevel(..))
+-- import Kotolab.HP.API.Effects.Log as Log
+-- import Kotolab.HP.API.Handler.AuthHandler as AuthHandler
+-- import Kotolab.HP.API.Json as JSON
+-- import Kotolab.HP.API.Middlewares.Utils (withLogger)
+-- import Kotolab.HP.API.Schema as Schema
+-- import Kotolab.HP.API.Schema.Types (AuthUserInfo)
+-- import Prim.Row as Row
+-- import Record (merge)
+-- import Run (AFF, EFFECT, Run)
+-- import Type.Row (type (+))
+
+-- type AuthenticatorExt :: Type -> Row Type -> Row Type
+-- type AuthenticatorExt auth r = (authUserInfo :: Maybe auth | r)
+
+-- -- | Authenticator middleware 
+-- -- |
+-- -- | RequestのAuthorizationヘッダーからJWTを（あれば）取得し、JWT検証・ペイロードデコード・ユーザのメールアドレス取得を試みる 
+-- -- | メールアドレスが取れたら、ユーザ(AuthUserInfo)を取得して、取れればリクエストに含める。 
+-- -- | 該当するユーザが存在しなければ、サインアップとみなしてユーザ情報を登録する。 
+-- authenticator
+--   :: forall extIn extOut r
+--    . Row.Nub (HTTPurple.RequestR Schema.Resource extOut) (HTTPurple.RequestR Schema.Resource extOut)
+--   => Row.Union extIn (AuthenticatorExt AuthUserInfo ()) extOut
+--   => HTTPurple.MiddlewareM (Run (AUTH + GITHUB + LOG + DB + AFF + EFFECT + r)) Schema.Resource extIn extOut
+-- authenticator = withLogger "Authenticator" \logger router req -> do
+--   case req.headers !! "Authorization" of
+--     Just tokenHeader
+--       | Just matched <- match bearerAuth tokenHeader
+--       , Just token <- join $ matched NonEmptyArray.!! 1 -> do
+--           logger Info token
+--           verifyResult <- Auth.verifyJWT token
+--           case verifyResult of
+--             Left err -> do
+--               logger Info "An error occurred during id token verification"
+--               logger Info $ Exn.message err
+--               unauthorized
+--             Right payload -> do
+--               mbEmail <- Auth.retrieveEmailFromPayload payload
+--               case mbEmail of
+--                 Just email -> do
+--                   logger Info $
+--                     Fmt.fmt @"Attempt to authenticate user with email={email}" { email }
+--                   mbUser <- DB.getUserByEmail email
+--                   case mbUser of
+--                     Just userModel -> case AuthHandler.toAuthUser userModel of
+--                       -- ユーザモデルをAuthUserInfoに変換できなかった場合は想定外のためシステムエラー
+--                       Left err -> do
+--                         logger Log.Error "Failed to convert user model to AuthUserInfo"
+--                         logger Log.Error $ show err
+--                         internalServerError "システムエラーが発生しました"
+--                       -- 正常系（認証成功)。
+--                       Right authUser -> do
+--                         logger Info $ Fmt.fmt @"Authenticated. user={user}" { user: show authUser }
+--                         router (merge req { authUserInfo: Just authUser })
+--                     -- 正常系（IDトークンから取ったEmailにマッチするユーザ情報がなかった場合）
+--                     --   -> 新規にユーザを登録して返す(registerMeにリダイレクト)
+--                     Nothing -> HTTPurple.usingCont do
+--                       output <- AuthHandler.registerMe payload
+--                       HTTPurple.ok $ JSON.stringify AuthHandler.getMeOutput output
+--                 Nothing -> do
+--                   logger Log.Error "Failed to retrieve email from ID token."
+--                   internalServerError "システムエラーが発生しました"
+
+--     _ -> router (merge req { authUserInfo: Nothing :: Maybe AuthUserInfo })
+--   where
+--   bearerAuth = unsafeRegex """^Bearer (.*)$""" unicode
+

@@ -1,6 +1,6 @@
 packages:
-  - "./api"
   - "./api-schema"
+  - "./backend"
   - "./web"
   - "./admin-web"
   - "./foreign-lib"

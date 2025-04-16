@@ -1,0 +1,36 @@
+name = "kotolab-hp-api"
+main = "index.js"
+compatibility_date = "2024-12-24"
+compatibility_flags = ["nodejs_compat"]
+
+[env.main]
+routes = [{ pattern = "api.kotolab.net/*", zone_name = "kotolab.net" }]
+
+[env.main.vars]
+BASE_URL = "/"
+ACCESS_CONTROL_ALLOW_ORIGIN = "https://kotolab.org"
+ACCESS_CONTROL_ALLOW_METHODS = "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS"
+ACCESS_CONTROL_ALLOW_HEADERS = "Accept, Content-Type, Authorization, X-Requested-With"
+LOG_LEVEL_MIN = "INFO"
+LOG_NO_COLOR = false
+
+[[env.main.kv_namespaces]]
+binding = "hackbar_attend_list_prod"
+id = "cb4f37641dda472bae93f043f957e8cd"
+preview_id = "184070c3bf5941faad0e3623c1e0b6d4"
+
+[env.develop]
+routes = [{ pattern = "dev-api.kotolab.net/*", zone_name = "kotolab.net" }]
+
+[env.develop.vars]
+BASE_URL = "/"
+ACCESS_CONTROL_ALLOW_ORIGIN = "*"
+ACCESS_CONTROL_ALLOW_METHODS = "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS"
+ACCESS_CONTROL_ALLOW_HEADERS = "Accept, Content-Type, Authorization, X-Requested-With"
+LOG_LEVEL_MIN = "Debug"
+LOG_NO_COLOR = false
+
+[[env.develop.kv_namespaces]]
+binding = "hackbar_attend_list_dev"
+id = "184070c3bf5941faad0e3623c1e0b6d4"
+preview_id = "184070c3bf5941faad0e3623c1e0b6d4"

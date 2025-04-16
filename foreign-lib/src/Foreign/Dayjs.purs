@@ -8,6 +8,8 @@ module Foreign.Dayjs
   , now
   , parse
   , year
+  , Format(..)
+  , iso8601
   ) where
 
 import Prelude
@@ -119,5 +121,10 @@ parse = runFn3 parseImpl Nothing Just
 
 foreign import formatImpl :: Fn2 String Dayjs String
 
-format :: String -> Dayjs -> String
-format = runFn2 formatImpl
+format :: Format -> Dayjs -> String
+format (Format f) d = runFn2 formatImpl f d
+
+newtype Format = Format String
+
+iso8601 :: Format
+iso8601 = Format "YYYY-MM-DDTHH:mm:ss.SSSZ"

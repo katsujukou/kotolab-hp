@@ -1,0 +1,20 @@
+{
+  "type": "module",
+  "scripts": {
+    "compile": "cd .. && spago build -p backend",
+    "optimize": "cd .. && purs-backend-es build",
+    "bundle": "esbuild ../output-es/LambdaKansai.HP.API.V1/index.js --bundle --platform=node --format=esm --minify --sourcemap=external --banner:js=\"import { createRequire } from 'module';const require = createRequire(import.meta.url);\" --outfile=dist/app.js",
+    "build": "pnpm run compile && pnpm run optimize && cp src/index.js .",
+    "clean": "rm -rf ../output ../output-es dist",
+    "release": "pnpm run clean && pnpm run build",
+    "prepare-release": "cp ../.github/workflows/backend/.npmrc ../.npmrc",
+    "deploy": "wrangler deploy ./index.js",
+    "dev": "pnpm run compile && cp ./src/index.dev.js ./index.js && wrangler dev --env=develop",
+    "test": "cd .. && spago test -p backend",
+    "check": "purs-tidy check src test"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250416.0",
+    "wrangler": "^4.0.0"
+  }
+}
