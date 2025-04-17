@@ -6,7 +6,8 @@
     "test": "cd .. && spago test -p foreign-lib",
     "clean": "cd .. && rm -rf ./.spago ./output ./output-es ./api/dist"
   },
-  "devDependencies": {
-    "dayjs": "^1.11.13"
+  "dependencies": {
+    "dayjs": "^1.11.13",
+    "url-join": "^5.0.0"
   }
 }

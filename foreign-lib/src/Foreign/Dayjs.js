@@ -1,6 +1,7 @@
 import Dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import tiemzone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc.js";
+import tiemzone from "dayjs/plugin/timezone.js";
+
 
 Dayjs.extend(utc);
 Dayjs.extend(tiemzone);
