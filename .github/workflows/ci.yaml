@@ -28,6 +28,8 @@ jobs:
       # Run CI jobs
       - name: Install
         run: spago install && pnpm -F './${{ matrix.target }}' install
+        env:
+          NPM_CONFIG_USERCONFIG: ".github/workflows/${{ matrix.target }}/.npmrc"
 
       - name: Compile
         run: pnpm -F './${{ matrix.target}}' run compile
