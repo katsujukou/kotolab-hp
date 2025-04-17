@@ -5,8 +5,8 @@ import Prelude
 import HTTPurple (Method(..), ok')
 import HTTPurple as HTTPurple
 import HTTPurple as Headers
-import Kotolab.HP.API.Effects.Env as Env
-import Kotolab.HP.API.Effects.Log (LOG)
+import Kotolab.HP.Backend.Effects.Env as Env
+import Kotolab.HP.Backend.Effects.Log (LOG)
 import Kotolab.HP.API.Middlewares.Utils (withLogger)
 import Run (EFFECT, Run, AFF)
 import Type.Row (type (+))

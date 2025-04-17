@@ -8,7 +8,7 @@ import Data.Maybe (Maybe(..))
 import Fmt as Fmt
 import HTTPurple (Method(..), RequestR, methodNotAllowed, unprocessableEntity)
 import HTTPurple as HTTPurple
-import Kotolab.HP.API.Effects.Log (LOG, LogLevel(..))
+import Kotolab.HP.Backend.Effects.Log (LOG, LogLevel(..))
 import Kotolab.HP.API.Middlewares.Utils (withLogger)
 import Kotolab.HP.API.Schema as Schema
 import Prim.Row as Row

@@ -1,4 +1,4 @@
-module Kotolab.HP.API.Effects.Log where
+module Kotolab.HP.Backend.Effects.Log where
 
 import Prelude
 

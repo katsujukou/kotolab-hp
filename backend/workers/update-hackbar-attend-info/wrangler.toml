@@ -1,0 +1,30 @@
+name = "update-hackbar-attend-info"
+main = "./index.js"
+compatibility_date = "2024-12-24"
+compatibility_flags = ["nodejs_compat"]
+
+observability.logs.enabled = true
+
+[triggers]
+crons = ["0 0,12 * * *"] # 毎日0時と１２時（UTC）
+
+[vars]
+GOOGLE_CALENDAR_API_URL = "https://www.googleapis.com/calendar/v3/calendars"
+
+[[kv_namespaces]]
+binding = "hackbar_attend_list"
+id = "cb4f37641dda472bae93f043f957e8cd"
+preview_id = "184070c3bf5941faad0e3623c1e0b6d4"
+
+
+[env.develop.vars]
+GOOGLE_CALENDAR_API_URL = "https://www.googleapis.com/calendar/v3/calendars"
+
+[env.develop]
+main = "./index.dev.js"
+triggers = { crons = ["0,10,20,30,40,50 * * * *"] }
+
+[[env.develop.kv_namespaces]]
+binding = "hackbar_attend_list"
+id = "184070c3bf5941faad0e3623c1e0b6d4"
+preview_id = "184070c3bf5941faad0e3623c1e0b6d4"

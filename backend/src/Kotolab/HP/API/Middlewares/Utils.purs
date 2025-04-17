@@ -6,8 +6,8 @@ import Dodo (text)
 import Dodo.Ansi (bold)
 import Fmt as Fmt
 import HTTPurple as HTTPurple
-import Kotolab.HP.API.Effects.Log (class Loggable, LOG, LogLevel(..), green, toLog)
-import Kotolab.HP.API.Effects.Log as Log
+import Kotolab.HP.Backend.Effects.Log (class Loggable, LOG, LogLevel(..), green, toLog)
+import Kotolab.HP.Backend.Effects.Log as Log
 import Run (Run)
 import Type.Row (type (+))
 

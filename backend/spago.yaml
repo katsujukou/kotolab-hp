@@ -6,6 +6,7 @@ package:
     - codec-argonaut
     - dodo-printer
     - effect
+    - fetch
     - fmt
     - httpurple
     - js-promise-aff

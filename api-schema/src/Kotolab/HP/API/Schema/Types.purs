@@ -1,4 +1,15 @@
-module Kotolab.HP.API.Schema.Types where
+module Kotolab.HP.API.Schema.Types
+  ( AttendTime
+  , Datetime
+  , HackbarAttendInfo
+  , attendTime
+  , closeTime
+  , datetime
+  , hackbarAttendInfo
+  , openTime
+  , parseAttendTime
+  , printAttendTime
+  ) where
 
 import Prelude
 
@@ -7,17 +18,17 @@ import Data.Codec.Argonaut as CA
 import Data.Codec.Argonaut.Record as CAR
 import Data.Enum (fromEnum, toEnum)
 import Data.Int as Int
-import Data.Maybe (Maybe)
+import Data.Maybe (Maybe, fromJust)
 import Data.String.CodeUnits as Str
 import Data.String.Regex as Re
 import Data.String.Regex.Flags (unicode)
 import Data.String.Regex.Unsafe (unsafeRegex)
 import Data.Time (Hour, Minute)
-import Data.Tuple (Tuple)
-import Data.Tuple.Nested ((/\))
+import Data.Tuple.Nested (type (/\), (/\))
 import Fmt as Fmt
 import Foreign.Dayjs (Dayjs)
 import Foreign.Dayjs as Dayjs
+import Partial.Unsafe (unsafePartial)
 
 type Datetime = Dayjs
 
@@ -27,12 +38,18 @@ datetime = CA.prismaticCodec "Datetime"
   (Dayjs.format Dayjs.iso8601)
   CA.string
 
-newtype AttendTime = AttendTime (Tuple Hour Minute)
+newtype AttendTime = AttendTime (Hour /\ Minute)
 
 derive instance Eq AttendTime
 derive instance Ord AttendTime
 instance Show AttendTime where
   show (AttendTime (y /\ m)) = Fmt.fmt @"(AttendTime {year} {month})" { year: show y, month: show m }
+
+openTime :: AttendTime
+openTime = AttendTime $ unsafePartial $ fromJust $ (/\) <$> toEnum 18 <*> toEnum 0
+
+closeTime :: AttendTime
+closeTime = AttendTime $ unsafePartial $ fromJust $ (/\) <$> toEnum 23 <*> toEnum 0
 
 printAttendTime :: AttendTime -> String
 printAttendTime (AttendTime (h /\ m)) = Fmt.fmt @"{h}:{m}"

@@ -12,13 +12,13 @@ module Kotolab.HP.API.Middlewares.Authenticator where
 -- import Fmt as Fmt
 -- import HTTPurple (internalServerError, unauthorized, (!!))
 -- import HTTPurple as HTTPurple
--- import Kotolab.HP.API.Effects.Auth (AUTH)
--- import Kotolab.HP.API.Effects.Auth as Auth
--- import Kotolab.HP.API.Effects.Db (DB)
--- import Kotolab.HP.API.Effects.Db as DB
--- import Kotolab.HP.API.Effects.GitHub (GITHUB)
--- import Kotolab.HP.API.Effects.Log (LOG, LogLevel(..))
--- import Kotolab.HP.API.Effects.Log as Log
+-- import Kotolab.HP.Backend.Effects.Auth (AUTH)
+-- import Kotolab.HP.Backend.Effects.Auth as Auth
+-- import Kotolab.HP.Backend.Effects.Db (DB)
+-- import Kotolab.HP.Backend.Effects.Db as DB
+-- import Kotolab.HP.Backend.Effects.GitHub (GITHUB)
+-- import Kotolab.HP.Backend.Effects.Log (LOG, LogLevel(..))
+-- import Kotolab.HP.Backend.Effects.Log as Log
 -- import Kotolab.HP.API.Handler.AuthHandler as AuthHandler
 -- import Kotolab.HP.API.Json as JSON
 -- import Kotolab.HP.API.Middlewares.Utils (withLogger)

@@ -11,11 +11,13 @@ import Dodo.Ansi as Ansi
 import Fmt as Fmt
 import HTTPurple (notFound)
 import HTTPurple as HTTPurple
-import Kotolab.HP.API.Effects.Log (class Loggable)
+import Kotolab.HP.Backend.Effects.Log (class Loggable)
 
 data BackendError
   = FailedToDecodeHackbarAttendInfo CA.JsonDecodeError
   | HackbarAttendInfoNotFound Year Month
+  | PerformUnsupportedEffect String
+  | FailedToDecodeGoogleCalendarApiResponse CA.JsonDecodeError
 
 instance Loggable BackendError where
   toLog = case _ of
@@ -26,6 +28,14 @@ instance Loggable BackendError where
     HackbarAttendInfoNotFound y m -> do
       Dodo.text $ Fmt.fmt @"{y}年{m}月度のHACKBAR出勤情報がありませんでした"
         { y: fromEnum y, m: fromEnum m }
+    PerformUnsupportedEffect eff -> do
+      (Ansi.foreground Red $ Dodo.text "サポートされていないEffectの使用") Dodo.<%>
+        Dodo.indent
+          (Ansi.foreground Black $ Dodo.text $ eff)
+    FailedToDecodeGoogleCalendarApiResponse jsonDecodeError -> do
+      (Ansi.foreground Red $ Dodo.text "Google Calendar APIのレスポンスのデコードに失敗") Dodo.<%>
+        Dodo.indent
+          (Ansi.foreground Black $ Dodo.text $ CA.printJsonDecodeError jsonDecodeError)
 
 toResponse :: BackendError -> HTTPurple.ResponseM
 toResponse = case _ of

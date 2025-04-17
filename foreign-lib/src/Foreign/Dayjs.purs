@@ -1,25 +1,34 @@
 module Foreign.Dayjs
   ( DayOfWeek(..)
   , Dayjs
+  , Format(..)
   , date
   , day
+  , dayOfWeek
   , format
+  , iso8601
   , month
   , now
   , parse
+  , setDay
+  , setHour
+  , setMillisecond
+  , setMinute
+  , setMonth
+  , setSecond
+  , setYear
   , year
-  , Format(..)
-  , iso8601
   ) where
 
 import Prelude
 
 import Data.Date (Day, Month, Year)
-import Data.Enum (class BoundedEnum, class Enum, Cardinality(..), toEnum)
+import Data.Enum (class BoundedEnum, class Enum, Cardinality(..), fromEnum, toEnum)
 import Data.Function.Uncurried (Fn2, Fn3, runFn2, runFn3)
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
 import Data.Show.Generic (genericShow)
+import Data.Time (Hour, Millisecond, Minute, Second)
 import Effect (Effect)
 
 foreign import data Dayjs :: Type
@@ -117,6 +126,29 @@ foreign import yearImpl :: Dayjs -> Int
 
 foreign import parseImpl :: Fn3 (forall a. Maybe a) (forall a. a -> Maybe a) String (Maybe Dayjs)
 
+foreign import unsafeSetImpl :: Fn3 Dayjs String Int Dayjs
+
+setYear :: Year -> Dayjs -> Dayjs
+setYear v d = runFn3 unsafeSetImpl d "year" (fromEnum v)
+
+setMonth :: Month -> Dayjs -> Dayjs
+setMonth v d = runFn3 unsafeSetImpl d "month" (fromEnum v)
+
+setDay :: Day -> Dayjs -> Dayjs
+setDay v d = runFn3 unsafeSetImpl d "date" (fromEnum v)
+
+setHour :: Hour -> Dayjs -> Dayjs
+setHour v d = runFn3 unsafeSetImpl d "hour" (fromEnum v)
+
+setMinute :: Minute -> Dayjs -> Dayjs
+setMinute v d = runFn3 unsafeSetImpl d "minute" (fromEnum v)
+
+setSecond :: Second -> Dayjs -> Dayjs
+setSecond v d = runFn3 unsafeSetImpl d "second" (fromEnum v)
+
+setMillisecond :: Millisecond -> Dayjs -> Dayjs
+setMillisecond v d = runFn3 unsafeSetImpl d "millisecond" (fromEnum v)
+
 parse :: String -> Maybe Dayjs
 parse = runFn3 parseImpl Nothing Just
 
@@ -129,3 +161,6 @@ newtype Format = Format String
 
 iso8601 :: Format
 iso8601 = Format "YYYY-MM-DDTHH:mm:ss.SSSZ"
+
+dayOfWeek :: Format
+dayOfWeek = Format "dddd"
