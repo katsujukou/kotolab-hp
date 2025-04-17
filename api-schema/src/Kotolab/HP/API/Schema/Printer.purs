@@ -11,7 +11,7 @@ import Routing.Duplex as RD
 
 print :: Endpoint -> Method /\ String
 print = case _ of
-  Public endpoint -> rmap ("/public" <> _) $ printPublicEndpoint endpoint
+  Public endpoint -> printPublicEndpoint endpoint
   where
   printPublicEndpoint = rmap (RD.print resourcePaths)
     <<< case _ of

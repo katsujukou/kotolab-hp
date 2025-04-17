@@ -28,7 +28,7 @@ infix 5 headerMany as :*
 type Headers = Array Header
 
 class MonadAff m <= MonadAjax m where
-  sendRequest :: Method -> URL -> Maybe String -> Headers -> m String
+  sendRequest :: Method -> URL -> Maybe String -> Headers -> m { statusCode :: Int, body :: String }
 
 instance monadAjaxHalogenM ::
   MonadAjax m =>

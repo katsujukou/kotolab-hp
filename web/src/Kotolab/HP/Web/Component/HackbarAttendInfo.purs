@@ -8,6 +8,7 @@ import Data.Tuple.Nested ((/\))
 import Effect.Class (class MonadEffect)
 import Effect.Class.Console as Console
 import Fmt as Fmt
+import Foreign.Dayjs (Format(..))
 import Foreign.Dayjs as Dayjs
 import Halogen (ClassName(..))
 import Halogen as H
@@ -15,11 +16,11 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import Halogen.Hooks (captures, useLifecycleEffect, useState, useTickEffect)
 import Halogen.Hooks as Hooks
+import Kotolab.HP.API.Schema.Types as SchemaTypes
 import Kotolab.HP.Web.Assets (assets, fromAssetURL)
-import Kotolab.HP.Web.Component.Types (HackbarAttendInfo)
 
 type Input =
-  { attendList :: Array HackbarAttendInfo
+  { attendList :: Array SchemaTypes.HackbarAttendInfo
   }
 
 make :: forall q o m. MonadEffect m => H.Component q Input o m
@@ -55,7 +56,7 @@ make = Hooks.component \_ inps -> Hooks.do
           ctx.attendList <#> \attend ->
             do
               [ HH.span [ HP.class_ $ ClassName "col-span-2 mr-1 text-right " ]
-                  [ HH.text $ Dayjs.format "MM/DD" attend.date
+                  [ HH.text $ Dayjs.format (Format "MM/DD") attend.date
                   ]
               , HH.span [ HP.class_ $ ClassName "col-span-2" ]
                   [ HH.text "("
@@ -74,7 +75,9 @@ make = Hooks.component \_ inps -> Hooks.do
               , HH.span [ HP.class_ $ ClassName "col-span-1" ] [ HH.text "..." ]
               , HH.span [ HP.class_ $ ClassName "col-span-3" ]
                   [ HH.text $ Fmt.fmt @"{from} - {to}"
-                      { from: show attend.startTime, to: show attend.endTime }
+                      { from: SchemaTypes.printAttendTime attend.startTime
+                      , to: SchemaTypes.printAttendTime attend.endTime
+                      }
                   ]
               ]
 

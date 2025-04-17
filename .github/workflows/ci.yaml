@@ -33,7 +33,6 @@ jobs:
         run: pnpm -F './${{ matrix.target}}' run compile
         
       - name: Test
-        if: matrix.target != 'api-schema'
         run: pnpm -F './${{ matrix.target }}' run test
 
       - name: Check

@@ -16,7 +16,7 @@ import Halogen.Hooks (captures, useQuery, useState, useTickEffect)
 import Halogen.Hooks as Hooks
 import Kotolab.HP.Web.Assets (assets, fromAssetURL)
 import Kotolab.HP.Web.Component.Types (MenuItem)
-import Kotolab.HP.Web.Hooks.UseNavigate (useNavigate)
+import Kotolab.HP.Web.Hooks.UseApp (useNavigate)
 import Kotolab.HP.Web.Routes (Route)
 
 type Input =

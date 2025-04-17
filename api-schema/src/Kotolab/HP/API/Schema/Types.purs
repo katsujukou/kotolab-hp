@@ -29,6 +29,11 @@ datetime = CA.prismaticCodec "Datetime"
 
 newtype AttendTime = AttendTime (Tuple Hour Minute)
 
+derive instance Eq AttendTime
+derive instance Ord AttendTime
+instance Show AttendTime where
+  show (AttendTime (y /\ m)) = Fmt.fmt @"(AttendTime {year} {month})" { year: show y, month: show m }
+
 printAttendTime :: AttendTime -> String
 printAttendTime (AttendTime (h /\ m)) = Fmt.fmt @"{h}:{m}"
   { h: to2DigitString $ fromEnum h

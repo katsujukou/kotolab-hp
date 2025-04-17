@@ -9,7 +9,7 @@ export const dayImpl = (d) => d.day();
 /** @param {Dayjs.Dayjs} d */
 export const dateImpl = (d) => d.date();
 /** @param {Dayjs.Dayjs} d */
-export const monthImpl = (d) => d.month();
+export const monthImpl = (d) => d.month() + 1;
 /** @param {Dayjs.Dayjs} d */
 export const yearImpl = (d) => d.year();
 

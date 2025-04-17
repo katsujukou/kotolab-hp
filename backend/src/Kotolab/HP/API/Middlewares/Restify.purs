@@ -35,7 +35,8 @@ restify = withLogger "Restify" \logger router req@{ method } -> do
   toEndpoint method = case _ of
     Schema.HackbarAttend y m -> case method of
       Get
-        | Just year <- toEnum y
+        | y >= 2024 -- HACKBARでお給仕しだしたのは2024年1月だから、それより前の出勤情報はあるわけない
+        , Just year <- toEnum y
         , Just month <- toEnum m -> Right $ Schema.listHackbarAttendInfo year month
         | otherwise -> Left unprocessableEntity
       _ -> Left methodNotAllowed

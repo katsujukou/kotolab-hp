@@ -12,7 +12,7 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Halogen.Hooks as Hooks
 import Kotolab.HP.Web.Component.Types (MenuItem)
-import Kotolab.HP.Web.Hooks.UseNavigate (useNavigate)
+import Kotolab.HP.Web.Hooks.UseApp (useNavigate)
 
 type Input =
   { menuItems :: Array MenuItem

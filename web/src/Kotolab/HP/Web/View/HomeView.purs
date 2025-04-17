@@ -2,54 +2,39 @@ module Kotolab.HP.Web.View.HomeView where
 
 import Prelude
 
-import Data.Codec.Argonaut as CA
-import Data.Either (either)
-import Effect.Class (class MonadEffect)
-import Effect.Console (log)
-import Effect.Unsafe (unsafePerformEffect)
+import Control.Monad.Reader (class MonadAsk)
+import Data.Maybe (Maybe(..))
 import Halogen (ClassName(..))
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import Halogen.Hooks (useLifecycleEffect)
 import Halogen.Hooks as Hooks
-import Kotolab.HP.API.Schema.Json as Json
+import Kotolab.HP.Web.Capabilities.MonadAjax (class MonadAjax)
 import Kotolab.HP.Web.Component.HTML.PageTitle (pageTitle)
 import Kotolab.HP.Web.Component.HackbarAttendInfo as HackbarAttendInfo
-import Kotolab.HP.Web.Component.Types (HackbarAttendInfo, hackbarAttendInfo)
+import Kotolab.HP.Web.Hooks.UseHackbarAttendInfoList (useHackbarAttendInfoList)
 import Type.Proxy (Proxy(..))
 
-attendList :: Array HackbarAttendInfo
-attendList = either (log >>> unsafePerformEffect >>> const []) identity $ Json.parse (CA.array hackbarAttendInfo)
-  """
-  [
-    {
-      "date": "2025-04-05",
-      "startTime": [18,0],
-      "endTime": [23,0]
-    },
-    {
-      "date": "2025-04-18",
-      "startTime": [19,30],
-      "endTime": [23,0]
-    },
-    {
-      "date": "2025-04-25",
-      "startTime": [19,30],
-      "endTime": [23,0]
-    },
-    {
-      "date": "2025-04-30",
-      "startTime": [18,0],
-      "endTime": [23,0]
-    }
-  ]
-  """
-
-make :: forall q i o m. MonadEffect m => H.Component q i o m
+make
+  :: forall q i o m env
+   . MonadAsk { apiBaseURL :: String | env } m
+  => MonadAjax m
+  => H.Component q i o m
 make = Hooks.component \_ _ -> Hooks.do
-  Hooks.pure (render {})
+  hackbarAttendInfoApi <- useHackbarAttendInfoList
+
+  useLifecycleEffect do
+    hackbarAttendInfoApi.reload
+    pure Nothing
+
+  let
+    ctx =
+      { hackbarAttendInfoList: hackbarAttendInfoApi.hackbarAttendInfoList
+      }
+  Hooks.pure (render ctx)
   where
-  render _ = do
+  render ctx = do
     HH.div
       [ HP.class_ $ ClassName "flex flex-col items-center "
       ]
@@ -67,7 +52,7 @@ make = Hooks.component \_ _ -> Hooks.do
           ]
       , HH.div [ HP.class_ $ ClassName "my-4 " ]
           [ HH.slot_ (Proxy :: _ "hackbar-attend-info") unit HackbarAttendInfo.make
-              { attendList }
+              { attendList: ctx.hackbarAttendInfoList }
           ]
       , HH.div [ HP.class_ $ ClassName "flex flex-col items-center" ]
           [ HH.h2 [ HP.class_ $ ClassName "font-yomogi text-lg text-pink-700 m-4" ]

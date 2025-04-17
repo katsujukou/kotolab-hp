@@ -11,10 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: [web, admin-web]
+        target: [web, backend]
     if: >
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main'
+      (github.event.workflow_run.head_branch == 'main' ||
+       github.event.workflow_run.head_branch == 'develop')
+
     steps:
       # Setup Nix envirionment
       - uses: actions/checkout@v3
@@ -23,26 +25,31 @@ jobs:
           nix_path: nixpkgs=channel:nixos-24.05
       - uses: cachix/cachix-action@v14
         with:
-          name: katsujukou-github
+          name: lambda-kansai-github
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - uses: nicknovitski/nix-develop@v1
       - run: nix develop --extra-experimental-features "nix-command flakes"
 
       # Run CI jobs
       - name: Install
-        run: pnpm -F './${{ matrix.target }}' install
-
+        run: |
+          RELEASE_ENV=${{ github.event.workflow_run.head_branch }} pnpm -F './${{ matrix.target}}' run prepare-release
+          pnpm -F './${{ matrix.target }}' install --frozen-lock
+        env:
+          NPM_CONFIG_USERCONFIG: ".github/workflows/${{ matrix.target }}/.npmrc"
+  
       - name: Release Build
-        run: pnpm -F './${{ matrix.target}}' run release
+        run: |
+          pnpm -F './${{ matrix.target}}' run release
       
       - name: Deploy Pages
-        if: matrix.target == 'web' || matrix.target == 'admin-web'
+        if: matrix.target == 'web'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: ${{ github.workspace}}/${{ matrix.target }}
-          command: pages deploy ./dist --project-name=kotolab-hp-${{ matrix.target }}
+          command: pages deploy ./dist --project-name=kotolab-hp-${{ matrix.target }} --branch=${{ github.event.workflow_run.head_branch }}
 
       - name: Deploy Workers
         if: matrix.target == 'backend'
@@ -51,4 +58,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: ${{ github.workspace}}/${{ matrix.target }}
-          command: deploy ./dist --name=kotolab-hp-api
+          command: deploy ./index.js --env=${{ github.event.workflow_run.head_branch }}

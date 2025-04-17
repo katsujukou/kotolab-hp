@@ -2,6 +2,7 @@ module Kotolab.HP.Web.App where
 
 import Prelude
 
+import Control.Monad.Reader (class MonadAsk)
 import Data.Int as Int
 import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
@@ -12,10 +13,9 @@ import Halogen (ClassName(..), liftAff, liftEffect)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import Halogen.Hooks (captures, subscribe, unsubscribe, useLifecycleEffect, useState, useTickEffect)
+import Halogen.Hooks (captures, useLifecycleEffect, useState, useTickEffect)
 import Halogen.Hooks as Hooks
-import Halogen.Query.Event (eventListener)
-import Kotolab.HP.Web.Capabilities.MonadAjax (class MonadAjax)
+import Kotolab.HP.Web.Capabilities.MonadAjax (class MonadAjax, URL)
 import Kotolab.HP.Web.Component.Footer as Footer
 import Kotolab.HP.Web.Component.Header as Header
 import Kotolab.HP.Web.Component.HeaderMenu as HeaderMenu
@@ -23,8 +23,8 @@ import Kotolab.HP.Web.Component.PageTopButton as PageTopButton
 import Kotolab.HP.Web.Component.SidebarMenu as SidebarMenu
 import Kotolab.HP.Web.Component.SidebarToggleButton as SidebarToggleButton
 import Kotolab.HP.Web.Component.Types (MenuItem)
+import Kotolab.HP.Web.Hooks.UseApp (useNavigate)
 import Kotolab.HP.Web.Hooks.UseHeight (useHeight)
-import Kotolab.HP.Web.Hooks.UseNavigate (useNavigate)
 import Kotolab.HP.Web.Routes (Route(..))
 import Kotolab.HP.Web.View.ContactView as ContactView
 import Kotolab.HP.Web.View.HomeView as HomeView
@@ -35,10 +35,7 @@ import Unsafe.Coerce (unsafeCoerce)
 import Web.CSSOMView (ScrollBehavior(..))
 import Web.CSSOMView.Element (scrollTo)
 import Web.DOM.Element as Element
-import Web.Event.Event (EventType(..))
-import Web.HTML as HTML
 import Web.HTML as Window
-import Web.HTML.Window (toEventTarget)
 
 menuItems :: Array MenuItem
 menuItems =
@@ -52,30 +49,35 @@ menuItems =
 _mainView :: H.RefLabel
 _mainView = H.RefLabel "main-view"
 
-make :: forall q i o m. MonadAjax m => H.Component q i o m
+make
+  :: forall q i o m env
+   . MonadAsk { apiBaseURL :: URL | env } m
+  => MonadAjax m
+  => H.Component q i o m
 make = Hooks.component \{ slotToken } _ -> Hooks.do
-  navigatorApi <- useNavigate
-  _ /\ cntId <- useState 0
+  navigator <- useNavigate
 
   dispayToggleBtn /\ dispayToggleBtnId <- useState true
   { height } <- useHeight
   shouldDisplayTopButton /\ shouldDisplayTopButtonId <- useState false
 
-  _ <- useMainViewHeight { shouldDisplayTopButtonId } { currentRoute: navigatorApi.currentRoute, height }
+  _ <- useMainViewHeight
+    { shouldDisplayTopButtonId }
+    { currentRoute: navigator.currentRoute
+    , height
+    }
 
+  -- useLifecycleEffect do
+  --   window <- liftEffect HTML.window
+  --   subscriptionId <- subscribe $
+  --     eventListener
+  --       (EventType "popstate")
+  --       (toEventTarget window)
+  --       triggerEval
+  --   pure $ Just (unsubscribe subscriptionId)
   useLifecycleEffect do
-    window <- liftEffect HTML.window
-    let
-      handler _ = Just do
-        -- 強制的にリレンダリング
-        Hooks.modify_ cntId (_ + 1)
-
-    subscriptionId <- subscribe $
-      eventListener
-        (EventType "popstate")
-        (toEventTarget window)
-        handler
-    pure $ Just (unsubscribe subscriptionId)
+    navigator.initialize
+    pure Nothing
   let
     handleSidebarToggleBtn = case _ of
       SidebarToggleButton.Clicked -> do
@@ -89,7 +91,7 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
       SidebarMenu.MenuItemClicked route -> do
         Hooks.put dispayToggleBtnId true
         liftAff $ Aff.delay (Milliseconds 200.0)
-        navigatorApi.navigateTo route
+        navigator.navigateTo route
 
     handleBackToTopClick = case _ of
       PageTopButton.Clicked -> do
@@ -100,7 +102,7 @@ make = Hooks.component \{ slotToken } _ -> Hooks.do
       { dispayToggleBtn
       , handleSidebarToggleBtn
       , handleSidebarMenu
-      , currentRoute: navigatorApi.currentRoute
+      , currentRoute: navigator.currentRoute
       , shouldDisplayTopButton
       , handleBackToTopClick
       }

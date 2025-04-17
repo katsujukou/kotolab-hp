@@ -102,6 +102,7 @@ day = dayImpl >>> toEnum
 date :: Dayjs -> Maybe Day
 date = dateImpl >>> toEnum
 
+-- | １始まり。すなわち January = 1
 month :: Dayjs -> Maybe Month
 month = monthImpl >>> toEnum
 

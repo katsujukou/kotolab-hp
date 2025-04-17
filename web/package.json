@@ -2,15 +2,14 @@
   "type": "module",
   "scripts": {
     "compile": "cd .. && spago build -p web",
-    "dev": "pnpm run compile && cp src/index.dev.js ./index.js && vite",
-    "test": "cd .. && spago test -p web",
-    "check": "purs-tidy check ./src ./test",
     "optimize": "cd .. && purs-backend-es build",
-    "bundle": "cp src/index.js ./index.js && vite build",
-    "build": "pnpm run compile && pnpm run optimize && pnpm run bundle",
-    "clean": "cd .. && rm -rf ./.spago ./output ./output-es ./web/dist ./web/index.js",
-    "deploy": "wrangler pages deploy ./dist --project-name=kotolab-hp-web",
-    "release": "pnpm run clean && pnpm run build"
+    "build": "cp src/index.js . && vite build",
+    "dev": "pnpm compile && cp ./src/index.dev.js ./index.js && vite",
+    "clean": "cd .. && rm -rf .spago output output-es web/dist web/index.js",
+    "release": "pnpm clean && pnpm compile && pnpm optimize && pnpm build",
+    "prepare-release": "cp ../.github/workflows/web/$RELEASE_ENV.env .env.local",
+    "test": "cd .. && spago test -p web",
+    "check": "purs-tidy check src test"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.11",

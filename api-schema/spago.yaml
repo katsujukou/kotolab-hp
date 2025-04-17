@@ -2,7 +2,15 @@ package:
   name: api-schema
   dependencies:
     - codec-argonaut
+    - datetime
+    - fmt
     - foreign-lib
     - http-methods
     - prelude
     - routing-duplex
+
+  test:
+    main: Test.Kotolab.HP.API.Schema
+    dependencies:
+      - spec
+      - spec-node

@@ -20,6 +20,6 @@ spec = describe "Foreign.Dayjs" do
       mbDay = Dayjs.parse "2025-03-26"
     mbDay `shouldNotEqual` Nothing
     (mbDay >>= Dayjs.year) `shouldEqual` toEnum 2025
-    (mbDay >>= Dayjs.month) `shouldEqual` toEnum 2
+    (mbDay >>= Dayjs.month) `shouldEqual` toEnum 3
     (mbDay >>= Dayjs.date) `shouldEqual` toEnum 26
 

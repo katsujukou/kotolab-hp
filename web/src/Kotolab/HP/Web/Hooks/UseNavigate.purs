@@ -2,33 +2,37 @@ module Kotolab.HP.Web.Hooks.UseNavigate where
 
 import Prelude
 
-import Data.Either (hush)
+import Data.Array as Array
+import Data.Bifunctor (lmap)
+import Data.Either (Either(..), note)
 import Data.Maybe (Maybe(..))
 import Data.Tuple.Nested ((/\))
 import Effect.Class (class MonadEffect, liftEffect)
+import Effect.Class.Console as Console
 import Halogen.Helix (HelixMiddleware, UseHelix, UseHelixHook, makeStore)
 import Halogen.Hooks (class HookNewtype, type (<>), Hook, HookType, UseEffect, useLifecycleEffect)
 import Halogen.Hooks as Hooks
 import Halogen.Subscription as HS
-import Kotolab.HP.Web.Routes (Route(..), route)
+import Kotolab.HP.Web.Hooks.UseSingleton (SingletonId, UseSingleton, mkSingleton, useSingleton)
+import Routing.Duplex (RouteDuplex')
 import Routing.Duplex as RD
 import Routing.PushState as PushState
 import Unsafe.Coerce (unsafeCoerce)
 
-type State =
+type State route =
   { rawPath :: String
-  , currentRoute :: Maybe Route
+  , currentRoute :: Maybe route
   , initialized :: Boolean
   }
 
-data Action = Initialized | SetRoute { rawPath :: String, route :: Maybe Route }
+data Action route = Initialized | SetRoute { rawPath :: String, route :: Maybe route }
 
-reducer :: State -> Action -> State
+reducer :: forall route. State route -> Action route -> State route
 reducer s0 = case _ of
   Initialized -> s0 { initialized = true }
   SetRoute { rawPath, route } -> s0 { rawPath = rawPath, currentRoute = route }
 
-middlewareStack :: forall m. MonadEffect m => HelixMiddleware State Action m
+middlewareStack :: forall m route. MonadEffect m => HelixMiddleware (State route) (Action route) m
 middlewareStack _ act next = do
   case act of
     SetRoute { rawPath } -> do
@@ -40,74 +44,118 @@ middlewareStack _ act next = do
       next act
     _ -> next act
 
-initialState :: State
+initialState :: forall route. State route
 initialState =
   { rawPath: ""
-  , currentRoute: Just Home
+  , currentRoute: Nothing
   , initialized: false
   }
 
-useNavigateStore :: forall m a. MonadEffect m => Eq a => UseHelixHook State Action a m
-useNavigateStore = makeStore "navigate" reducer initialState middlewareStack
+useNavigatorStore :: forall m a route. Eq a => MonadEffect m => UseHelixHook (State route) (Action route) a m
+useNavigatorStore = makeStore "navigate" reducer initialState middlewareStack
 
-foreign import data UseApp :: HookType
+foreign import data UseNavigate :: (Type -> Type) -> Type -> HookType
 
-type UseApp' = UseHelix State <> UseEffect <> Hooks.Pure
+type UseNavigate' m route = UseSingleton (Array (NavigationGuard m route))
+  <> UseHelix (State route) m
+  <> UseEffect
+  <> Hooks.Pure
 
-instance HookNewtype UseApp UseApp'
+instance HookNewtype (UseNavigate m route) (UseNavigate' m route)
 
-type UseNaviagteInterface m =
-  { currentRoute :: Maybe Route
-  , getCurrentRoute :: Hooks.HookM m (Maybe Route)
-  , navigateTo :: Route -> Hooks.HookM m Unit
+type NavigationGuard m route = { from :: Either String route, to :: route } -> Hooks.HookM m (Maybe route)
+
+type UseNaviagteInterface route m =
+  { currentRoute :: Maybe route
+  , getCurrentRoute :: Hooks.HookM m (Maybe route)
+  , navigateTo :: route -> Hooks.HookM m Unit
+  , addGuard :: NavigationGuard m route -> Hooks.HookM m Unit
+  , initialize :: Hooks.HookM m Unit
   }
 
-useNavigate :: forall m. MonadEffect m => Hook m UseApp (UseNaviagteInterface m)
-useNavigate = Hooks.wrap hook
+evalGuards :: forall m route. Eq route => Either String route -> route -> Maybe route -> Array (NavigationGuard m route) -> Hooks.HookM m (Maybe route)
+evalGuards from to' prev = Array.uncons >>> case _ of
+  Nothing -> pure (Just to')
+  Just { head: g, tail: rest } -> do
+    guardResult <- g { from, to: to' }
+    pure guardResult >>= case _ of
+      Nothing -> pure Nothing
+      Just rewritedTo
+        | Just rewritedTo == prev -> pure (Just rewritedTo)
+        | otherwise -> evalGuards from rewritedTo (Just to') rest
+
+navguardsId :: forall m route. SingletonId (Array (NavigationGuard m route))
+navguardsId = mkSingleton "navguards" []
+
+parseRoute :: forall r. RouteDuplex' r -> String -> Either String r
+parseRoute route rawPath = case RD.parse route rawPath of
+  Left _ -> Left rawPath
+  Right r -> Right r
+
+useNavigate
+  :: forall m route
+   . MonadEffect m
+  => Eq route
+  => RouteDuplex' route
+  -> Hook m (UseNavigate m route) (UseNaviagteInterface route m)
+useNavigate route = Hooks.wrap hook
   where
-  hook :: _ _ UseApp' _
+  hook :: _ _ (UseNavigate' _ _) _
   hook = Hooks.do
-    { currentRoute } /\ storeApi <- useNavigateStore identity
+    getNavGuards /\ modifyNavGuards <- useSingleton navguardsId
+    { currentRoute } /\ storeApi <- useNavigatorStore identity
+
+    let
+      navigateTo :: route -> Hooks.HookM m Unit
+      navigateTo to = navigateToRaw (Right to)
+
+      addGuard g = modifyNavGuards (_ `Array.snoc` g)
+
+      navigateToRaw :: Either String route -> Hooks.HookM m Unit
+      navigateToRaw (Left rawPath) = do
+        Console.log "navigateToRaw Left"
+        storeApi.dispatch (SetRoute { rawPath, route: Nothing })
+      navigateToRaw (Right to) = do
+        from <- storeApi.getState <#> \{ currentRoute: cr, rawPath } -> note rawPath cr
+        guards <- getNavGuards
+        evalGuards from to Nothing guards >>= case _ of
+          Just to' -> do
+            storeApi.dispatch $
+              SetRoute { rawPath: RD.print route to', route: Just to' }
+          Nothing -> do
+            Console.log "navigation is cancelled by navguard"
+            pure unit
+
+      initialize = do
+        -- 初期化直後のパス情報をStore反映させる
+        inst <- liftEffect PushState.makeInterface
+        liftEffect inst.locationState >>= _.path >>> parseRoute route >>> navigateToRaw
+        storeApi.dispatch Initialized
 
     useLifecycleEffect $ do
       initialized <- storeApi.getState <#> _.initialized
       if initialized then pure Nothing
       else do
+        inst <- liftEffect PushState.makeInterface
         let
           updateRoute :: PushState.LocationState -> Hooks.HookM m Unit
-          updateRoute lc = do
-            storeApi.dispatch $
-              SetRoute
-                { rawPath: lc.path
-                , route: hush $ RD.parse route lc.path
-                }
-
-        inst <- liftEffect PushState.makeInterface
+          updateRoute lc = navigateToRaw (lmap (const lc.path) $ RD.parse route lc.path)
 
         { unlistenLoc, emitter } <- liftEffect do
           { emitter, listener } <- HS.create
           unlistenLoc <- inst.listen (HS.notify listener)
           pure { unlistenLoc, emitter: emitter <#> updateRoute }
 
-        -- 初期化直後のパス情報をStore反映させる
-        liftEffect inst.locationState >>= updateRoute
-
         subscriptionId <- Hooks.subscribe emitter
-
-        storeApi.dispatch Initialized
 
         pure $ Just do
           liftEffect unlistenLoc
           Hooks.unsubscribe subscriptionId
 
-    let
-      navigateTo :: Route -> Hooks.HookM m Unit
-      navigateTo to = do
-        storeApi.dispatch $
-          SetRoute { rawPath: RD.print route to, route: Just to }
-
-    Hooks.pure
+    Hooks.pure $
       { currentRoute
       , getCurrentRoute: storeApi.getState <#> _.currentRoute
       , navigateTo
+      , addGuard
+      , initialize
       }
