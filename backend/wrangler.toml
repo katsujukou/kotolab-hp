@@ -9,7 +9,7 @@ observability.logs.enabled = true
 
 [env.main.vars]
 BASE_URL = "/"
-ACCESS_CONTROL_ALLOW_ORIGIN = "https://kotolab.org"
+ACCESS_CONTROL_ALLOW_ORIGIN = "https://kotolab.net"
 ACCESS_CONTROL_ALLOW_METHODS = "GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS"
 ACCESS_CONTROL_ALLOW_HEADERS = "Accept, Content-Type, Authorization, X-Requested-With"
 LOG_LEVEL_MIN = "INFO"
